@@ -1,0 +1,10 @@
+@use '../abstracts/mixins' as *;
+
+// ==============================================
+// Global styles
+// ==============================================
+
+#app {
+  min-height: 100vh;
+  @include flex-column;
+}
