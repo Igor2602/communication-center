@@ -1,5 +1,44 @@
-# Vue 3 + TypeScript + Vite
+# Communication Center
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Chat interface built with Vue 3, TypeScript, Pinia, PrimeVue and Sass.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Stack
+
+- **Vue 3** — Composition API with `<script setup>`
+- **TypeScript** — strict typing, no `any`
+- **Pinia** — state management
+- **PrimeVue** — UI primitives (used selectively)
+- **Sass (SCSS)** — structured styling with BEM
+- **Vite** — build tooling
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server |
+| `npm run build` | Type check + production build |
+| `npm run preview` | Preview production build |
+
+## Project Structure
+
+```
+src/
+├── components/     # Reusable presentational components
+├── composables/    # Reusable composition functions
+├── mocks/          # Fake data for development
+├── router/         # Vue Router config
+├── services/       # API/service layer (fake or real)
+├── stores/         # Pinia stores
+├── styles/         # Global SCSS (abstracts, base, components)
+├── types/          # Shared TypeScript types and interfaces
+└── views/          # Page-level components
+```
+
+See [CONVENTIONS.md](./CONVENTIONS.md) for architecture and coding standards.
