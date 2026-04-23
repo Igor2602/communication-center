@@ -5,7 +5,7 @@
   <section class="chat-container" aria-label="Chat">
     <header class="chat-container__header">
       <slot name="header">
-        <span class="chat-container__header-placeholder">Select a conversation</span>
+        <span class="chat-container__header-placeholder">Selecione uma conversa</span>
       </slot>
     </header>
 

@@ -46,6 +46,6 @@
 
 @mixin transition($properties...) {
   transition-property: $properties;
-  transition-duration: $transition-base;
+  transition-duration: 250ms;
   transition-timing-function: ease;
 }
