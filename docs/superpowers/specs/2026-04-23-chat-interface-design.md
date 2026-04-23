@@ -61,7 +61,6 @@ Two services with simulated async (200-800ms random delay via Promises):
 
 - `getConversations()` — returns all non-archived conversations
 - `archiveConversation(id)` — marks a conversation as archived
-- `searchConversations(query)` — filters by contact name or last message content
 
 ### MessageService
 
@@ -110,6 +109,9 @@ Single `useChatStore` as the centralized source of truth.
 - Messages are cached per conversation — `selectConversation` only fetches if not already loaded
 - The store owns all state transitions — components only read getters and dispatch actions
 - Reply simulation orchestration lives in the store, not in the service
+- `lastMessage` is always kept in sync when messages change (send, receive reply) to avoid stale data in the conversation list
+- Search filtering is handled entirely in the store via `visibleConversations` getter — no separate service method needed
+- Typing state transitions are controlled exclusively in the store for UI consistency
 
 ## Component Tree
 
@@ -146,6 +148,7 @@ App.vue
 - **Desktop (>=1024px):** sidebar and chat side by side
 - **Tablet (768-1023px):** sidebar narrower, chat takes more space
 - **Mobile (<768px):** single panel view. Default shows conversation list. Selecting a conversation shows chat with a back button in ChatHeader. Back returns to list.
+- Mobile navigation state (which panel is visible) is managed at the ChatLayout level — it is purely presentational, not part of domain state.
 
 ### Empty State
 
@@ -159,6 +162,7 @@ All composables are in `src/composables/`. They handle pure UI logic with no sto
 
 - Exposes `isMobile`, `isTablet`, `isDesktop` as reactive refs
 - Listens to `window.matchMedia` with defined breakpoints
+- Cleans up matchMedia listeners on component unmount to prevent memory leaks
 - Used by ChatLayout to control panel visibility
 
 ### useAutoScroll(containerRef)
@@ -257,6 +261,7 @@ Vitest + Vue Test Utils. ~15-20 tests targeting critical flows.
 - `ConversationItem` — renders name, preview, time, badge, typing state
 - `MessageBubble` — renders content, applies incoming/outgoing class
 - `DateDivider` — renders formatted date
+- `MessageComposer` — Enter sends message, Shift+Enter inserts newline
 
 ### What We Skip
 
