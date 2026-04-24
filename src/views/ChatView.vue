@@ -6,7 +6,9 @@ import ChatContainer from '@/components/layout/ChatContainer.vue'
 import ChatHeader from '@/components/chat/ChatHeader.vue'
 import MessageList from '@/components/chat/MessageList.vue'
 import MessageInput from '@/components/chat/MessageInput.vue'
+import MessageListSkeleton from '@/components/chat/MessageListSkeleton.vue'
 import AttachmentPreview from '@/components/chat/AttachmentPreview.vue'
+import BaseEmptyState from '@/components/ui/BaseEmptyState.vue'
 import { useChatStore } from '@/stores/useChatStore'
 import { currentUser } from '@/mocks/users'
 
@@ -44,15 +46,25 @@ function handlePreviewAttachment(attachment: Attachment) {
           @unarchive="handleUnarchive"
         />
       </template>
-      <template v-if="chatStore.selectedConversation" #messages>
+
+      <template #messages>
+        <MessageListSkeleton v-if="chatStore.isLoadingMessages" />
         <MessageList
+          v-else-if="chatStore.selectedConversation"
           :messages="chatStore.selectedMessages"
           :participant="chatStore.selectedConversation.participant"
           :current-user-avatar="currentUser.avatar"
           :is-typing="chatStore.isSelectedTyping"
           @preview-attachment="handlePreviewAttachment"
         />
+        <BaseEmptyState
+          v-else
+          icon="pi pi-comments"
+          title="Selecione uma conversa"
+          description="Escolha uma conversa na lista ao lado para começar a trocar mensagens."
+        />
       </template>
+
       <template v-if="chatStore.selectedConversation" #composer>
         <MessageInput />
       </template>

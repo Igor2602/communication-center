@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useChatStore } from '@/stores/useChatStore'
 import ConversationItem from './ConversationItem.vue'
+import ConversationListSkeleton from './ConversationListSkeleton.vue'
 
 const chatStore = useChatStore()
 
@@ -68,7 +69,10 @@ function showActive() {
       <span>Conversas arquivadas</span>
     </button>
 
+    <ConversationListSkeleton v-if="chatStore.isLoadingConversations" />
+
     <div
+      v-else
       class="conversation-list__items"
       role="listbox"
       :aria-label="chatStore.isViewingArchived ? 'Conversas arquivadas' : 'Conversas'"
