@@ -171,7 +171,7 @@ describe('useChatStore', () => {
       expect(store.archivedConversations[0].isArchived).toBe(true)
     })
 
-    it('clears selection if archived conversation was selected', async () => {
+    it('keeps conversation selected after archiving', async () => {
       vi.mocked(chatService.archiveConversation).mockResolvedValue()
 
       const store = useChatStore()
@@ -180,7 +180,7 @@ describe('useChatStore', () => {
 
       await store.archiveConversation('conv-1')
 
-      expect(store.selectedConversationId).toBeNull()
+      expect(store.selectedConversationId).toBe('conv-1')
     })
   })
 })

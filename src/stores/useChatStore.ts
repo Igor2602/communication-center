@@ -183,10 +183,6 @@ export const useChatStore = defineStore('chat', () => {
       conversations.value = conversations.value.filter((c) => c.id !== conversationId)
       archivedConversations.value.push(conversation)
     }
-
-    if (selectedConversationId.value === conversationId) {
-      selectedConversationId.value = null
-    }
   }
 
   async function unarchiveConversation(conversationId: string) {
@@ -199,10 +195,6 @@ export const useChatStore = defineStore('chat', () => {
       conversation.isArchived = false
       archivedConversations.value = archivedConversations.value.filter((c) => c.id !== conversationId)
       conversations.value.push(conversation)
-    }
-
-    if (selectedConversationId.value === conversationId) {
-      selectedConversationId.value = null
     }
   }
 

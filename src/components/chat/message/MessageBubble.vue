@@ -152,9 +152,10 @@ $indent: calc(#{$avatar-size} + #{$avatar-gap});
     font-family: $font-family-base;
     font-size: 14px;
     font-weight: $font-weight-medium;
-    line-height: 100%;
+    line-height: 1.5;
     letter-spacing: 0;
     color: #475569;
+    white-space: pre-wrap;
     word-break: break-word;
   }
 

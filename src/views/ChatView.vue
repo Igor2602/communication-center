@@ -41,16 +41,10 @@ function handleBack() {
 
 function handleArchive(conversationId: string) {
   chatStore.archiveConversation(conversationId)
-  if (isMobile.value) {
-    showChat.value = false
-  }
 }
 
 function handleUnarchive(conversationId: string) {
   chatStore.unarchiveConversation(conversationId)
-  if (isMobile.value) {
-    showChat.value = false
-  }
 }
 
 function handlePreviewAttachment(attachment: Attachment) {
