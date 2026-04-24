@@ -68,12 +68,23 @@ watch(
 </script>
 
 <template>
-  <div ref="listRef" class="message-list" role="log" aria-label="Mensagens">
-    <div class="message-list__banner" role="status">
+  <div
+    ref="listRef"
+    class="message-list"
+    role="log"
+    aria-label="Mensagens"
+  >
+    <div
+      class="message-list__banner"
+      role="status"
+    >
       Todas as conversas podem ser visualizadas pelo gestor do sistema para fins de auditoria institucional.
     </div>
 
-    <template v-for="group in groupedMessages" :key="group.date">
+    <template
+      v-for="group in groupedMessages"
+      :key="group.date"
+    >
       <DateDivider :label="group.label" />
       <MessageBubble
         v-for="message in group.messages"

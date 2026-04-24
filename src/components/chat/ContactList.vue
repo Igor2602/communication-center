@@ -51,11 +51,15 @@ onMounted(() => {
           class="contact-list__search-input"
           placeholder="Buscar contatos..."
           aria-label="Buscar contatos"
-        />
+        >
       </div>
     </div>
 
-    <div class="contact-list__items" role="listbox" aria-label="Contatos">
+    <div
+      class="contact-list__items"
+      role="listbox"
+      aria-label="Contatos"
+    >
       <button
         v-for="contact in filteredContacts"
         :key="contact.id"

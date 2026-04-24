@@ -8,9 +8,21 @@ defineProps<{
 
 <template>
   <div class="empty-state">
-    <i v-if="icon" :class="icon" class="empty-state__icon" aria-hidden="true" />
-    <h2 class="empty-state__title">{{ title }}</h2>
-    <p v-if="description" class="empty-state__description">{{ description }}</p>
+    <i
+      v-if="icon"
+      :class="icon"
+      class="empty-state__icon"
+      aria-hidden="true"
+    />
+    <h2 class="empty-state__title">
+      {{ title }}
+    </h2>
+    <p
+      v-if="description"
+      class="empty-state__description"
+    >
+      {{ description }}
+    </p>
   </div>
 </template>
 

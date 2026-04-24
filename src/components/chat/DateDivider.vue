@@ -5,10 +5,13 @@ defineProps<{
 </script>
 
 <template>
-  <div class="date-divider" role="separator">
-    <hr class="date-divider__line" />
+  <div
+    class="date-divider"
+    role="separator"
+  >
+    <hr class="date-divider__line">
     <span class="date-divider__label">{{ label }}</span>
-    <hr class="date-divider__line" />
+    <hr class="date-divider__line">
   </div>
 </template>
 

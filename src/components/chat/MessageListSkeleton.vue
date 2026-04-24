@@ -5,43 +5,87 @@ import Skeleton from 'primevue/skeleton'
 <template>
   <div class="message-skeleton">
     <div class="message-skeleton__divider">
-      <Skeleton width="6rem" height="0.75rem" borderRadius="999px" />
+      <Skeleton
+        width="6rem"
+        height="0.75rem"
+        border-radius="999px"
+      />
     </div>
 
     <!-- Incoming -->
     <div class="message-skeleton__row">
-      <Skeleton shape="circle" size="2.5rem" />
+      <Skeleton
+        shape="circle"
+        size="2.5rem"
+      />
       <div class="message-skeleton__bubble">
-        <Skeleton width="4rem" height="0.75rem" />
-        <Skeleton width="16rem" height="2.5rem" borderRadius="12px" />
+        <Skeleton
+          width="4rem"
+          height="0.75rem"
+        />
+        <Skeleton
+          width="16rem"
+          height="2.5rem"
+          border-radius="12px"
+        />
       </div>
     </div>
 
     <!-- Outgoing -->
     <div class="message-skeleton__row message-skeleton__row--outgoing">
       <div class="message-skeleton__bubble message-skeleton__bubble--right">
-        <Skeleton width="3rem" height="0.75rem" />
-        <Skeleton width="12rem" height="2.5rem" borderRadius="12px" />
+        <Skeleton
+          width="3rem"
+          height="0.75rem"
+        />
+        <Skeleton
+          width="12rem"
+          height="2.5rem"
+          border-radius="12px"
+        />
       </div>
-      <Skeleton shape="circle" size="2.5rem" />
+      <Skeleton
+        shape="circle"
+        size="2.5rem"
+      />
     </div>
 
     <!-- Incoming -->
     <div class="message-skeleton__row">
-      <Skeleton shape="circle" size="2.5rem" />
+      <Skeleton
+        shape="circle"
+        size="2.5rem"
+      />
       <div class="message-skeleton__bubble">
-        <Skeleton width="5rem" height="0.75rem" />
-        <Skeleton width="20rem" height="2.5rem" borderRadius="12px" />
+        <Skeleton
+          width="5rem"
+          height="0.75rem"
+        />
+        <Skeleton
+          width="20rem"
+          height="2.5rem"
+          border-radius="12px"
+        />
       </div>
     </div>
 
     <!-- Outgoing -->
     <div class="message-skeleton__row message-skeleton__row--outgoing">
       <div class="message-skeleton__bubble message-skeleton__bubble--right">
-        <Skeleton width="3rem" height="0.75rem" />
-        <Skeleton width="14rem" height="2.5rem" borderRadius="12px" />
+        <Skeleton
+          width="3rem"
+          height="0.75rem"
+        />
+        <Skeleton
+          width="14rem"
+          height="2.5rem"
+          border-radius="12px"
+        />
       </div>
-      <Skeleton shape="circle" size="2.5rem" />
+      <Skeleton
+        shape="circle"
+        size="2.5rem"
+      />
     </div>
   </div>
 </template>

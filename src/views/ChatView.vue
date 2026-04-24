@@ -69,7 +69,10 @@ function handlePreviewAttachment(attachment: Attachment) {
       v-show="!isMobile || showChat"
       :class="{ 'chat-view__main--mobile': isMobile }"
     >
-      <template v-if="chatStore.selectedConversation" #header>
+      <template
+        v-if="chatStore.selectedConversation"
+        #header
+      >
         <ChatHeader
           :conversation="chatStore.selectedConversation"
           :show-back="isMobile"
@@ -97,7 +100,10 @@ function handlePreviewAttachment(attachment: Attachment) {
         />
       </template>
 
-      <template v-if="chatStore.selectedConversation" #composer>
+      <template
+        v-if="chatStore.selectedConversation"
+        #composer
+      >
         <MessageInput />
       </template>
     </ChatContainer>

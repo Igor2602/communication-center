@@ -46,11 +46,14 @@ function showActive() {
           class="conversation-list__search-input"
           placeholder="Buscar conversas"
           aria-label="Buscar conversas"
-        />
+        >
       </div>
     </div>
 
-    <div v-if="chatStore.isViewingArchived" class="conversation-list__archived-header">
+    <div
+      v-if="chatStore.isViewingArchived"
+      class="conversation-list__archived-header"
+    >
       <button
         type="button"
         class="conversation-list__back"

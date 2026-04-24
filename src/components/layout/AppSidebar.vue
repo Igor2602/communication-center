@@ -24,11 +24,18 @@ async function handleContactSelect(contact: User) {
 </script>
 
 <template>
-  <aside class="sidebar" aria-label="Conversas">
+  <aside
+    class="sidebar"
+    aria-label="Conversas"
+  >
     <header class="sidebar__header">
       <div class="sidebar__header-text">
-        <h1 class="sidebar__title">Central de Comunicação</h1>
-        <p class="sidebar__subtitle">Comunicação interna</p>
+        <h1 class="sidebar__title">
+          Central de Comunicação
+        </h1>
+        <p class="sidebar__subtitle">
+          Comunicação interna
+        </p>
       </div>
       <button
         v-if="!isSelectingContact"

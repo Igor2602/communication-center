@@ -48,7 +48,7 @@ function formatTime(isoString: string): string {
             :src="props.message.attachment.base64"
             :alt="props.message.attachment.name"
             class="message-bubble__attachment-image"
-          />
+          >
           <div
             v-else-if="props.message.attachment.type === 'pdf'"
             class="message-bubble__attachment-pdf"
@@ -59,7 +59,10 @@ function formatTime(isoString: string): string {
             </span>
           </div>
         </button>
-        <p v-if="props.message.content" class="message-bubble__content">
+        <p
+          v-if="props.message.content"
+          class="message-bubble__content"
+        >
           {{ props.message.content }}
         </p>
       </div>

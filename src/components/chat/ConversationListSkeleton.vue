@@ -9,13 +9,25 @@ import Skeleton from 'primevue/skeleton'
       :key="i"
       class="conversation-skeleton__item"
     >
-      <Skeleton shape="circle" size="3rem" />
+      <Skeleton
+        shape="circle"
+        size="3rem"
+      />
       <div class="conversation-skeleton__content">
         <div class="conversation-skeleton__top">
-          <Skeleton width="60%" height="0.875rem" />
-          <Skeleton width="2.5rem" height="0.75rem" />
+          <Skeleton
+            width="60%"
+            height="0.875rem"
+          />
+          <Skeleton
+            width="2.5rem"
+            height="0.75rem"
+          />
         </div>
-        <Skeleton width="80%" height="0.75rem" />
+        <Skeleton
+          width="80%"
+          height="0.75rem"
+        />
       </div>
     </div>
   </div>

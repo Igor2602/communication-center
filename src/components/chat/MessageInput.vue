@@ -140,8 +140,11 @@ function handleSend() {
         aria-label="Selecionar arquivo"
         tabindex="-1"
         @change="handleFileChange"
-      />
-      <div ref="attachWrapperRef" class="message-input__attach-wrapper">
+      >
+      <div
+        ref="attachWrapperRef"
+        class="message-input__attach-wrapper"
+      >
         <button
           type="button"
           class="message-input__attach"

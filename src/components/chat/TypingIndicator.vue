@@ -8,7 +8,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="typing-indicator" aria-live="polite">
+  <div
+    class="typing-indicator"
+    aria-live="polite"
+  >
     <Avatar
       :image="avatar"
       :alt="name"

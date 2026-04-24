@@ -2,7 +2,10 @@
 </script>
 
 <template>
-  <section class="chat-container" aria-label="Chat">
+  <section
+    class="chat-container"
+    aria-label="Chat"
+  >
     <header class="chat-container__header">
       <slot name="header">
         <span class="chat-container__header-placeholder">Selecione uma conversa</span>

@@ -2,11 +2,12 @@
 import type { Attachment } from '@/types/chat'
 import Dialog from 'primevue/dialog'
 
-const visible = defineModel<boolean>('visible', { required: true })
-
 defineProps<{
   attachment: Attachment | null
 }>()
+
+const visible = defineModel<boolean>('visible', { required: true })
+
 </script>
 
 <template>
@@ -14,17 +15,20 @@ defineProps<{
     v-model:visible="visible"
     :header="attachment?.name ?? 'Anexo'"
     modal
-    dismissableMask
+    dismissable-mask
     :style="{ width: '80vw', maxWidth: '900px' }"
     class="attachment-preview"
   >
-    <div v-if="attachment" class="attachment-preview__content">
+    <div
+      v-if="attachment"
+      class="attachment-preview__content"
+    >
       <img
         v-if="attachment.type === 'image'"
         :src="attachment.base64"
         :alt="attachment.name"
         class="attachment-preview__image"
-      />
+      >
       <iframe
         v-else-if="attachment.type === 'pdf'"
         :src="attachment.base64"
