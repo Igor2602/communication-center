@@ -48,9 +48,10 @@
   }
 
   &__composer {
-    padding: $spacing-md $spacing-lg;
-    border-top: 1px solid $color-border;
-    background-color: $color-bg-primary;
+    padding: 16px 16px 24px;
+    gap: 10px;
+    border-top: 1px solid #e2e8f0;
+    background-color: #ffffff;
   }
 }
 </style>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import type { Attachment } from '@/types/chat'
-import Button from 'primevue/button'
 import { useMessageComposer } from '@/composables/useMessageComposer'
 import { useChatStore } from '@/stores/useChatStore'
 
@@ -182,14 +181,20 @@ function handleSend() {
           </div>
         </Transition>
       </div>
-      <Button
-        icon="pi pi-send"
-        label="Enviar"
-        aria-label="Enviar mensagem"
+      <button
+        type="button"
         class="message-input__send"
+        aria-label="Enviar mensagem"
         :disabled="!canSend && !pendingAttachment"
         @click="handleSend"
-      />
+      >
+        <span>Enviar</span>
+        <img
+          src="@/assets/icons/icon-send.svg"
+          alt=""
+          class="message-input__send-icon"
+        >
+      </button>
     </div>
 
     <div class="message-input__footer">
@@ -308,7 +313,7 @@ function handleSend() {
     width: 40px;
     height: 40px;
     flex-shrink: 0;
-    color: $color-text-secondary;
+    color: #0768ac;
     @include transition(color);
 
     &:hover {
@@ -362,7 +367,38 @@ function handleSend() {
   }
 
   &__send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 38.5px;
+    padding: 0 16px;
     flex-shrink: 0;
+    background-color: #0768ac;
+    border: 1px solid #0768ac;
+    border-radius: $radius-md;
+    font-family: $font-family-base;
+    font-size: 14px;
+    font-weight: $font-weight-medium;
+    line-height: 100%;
+    letter-spacing: 0;
+    color: #ffffff;
+    cursor: pointer;
+    @include transition(background-color);
+
+    &:hover:not(:disabled) {
+      background-color: #065a96;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__send-icon {
+    width: 16px;
+    height: 16px;
   }
 
   &__footer {
@@ -371,8 +407,12 @@ function handleSend() {
   }
 
   &__counter {
-    font-size: $font-size-xs;
-    color: $color-text-secondary;
+    font-family: $font-family-base;
+    font-size: 12px;
+    font-weight: $font-weight-regular;
+    line-height: 21px;
+    letter-spacing: 0;
+    color: #334155;
 
     &--over {
       color: $color-error;
@@ -382,7 +422,7 @@ function handleSend() {
 
   &__separator {
     margin: 0 $spacing-xs;
-    color: $color-border;
+    color: #334155;
   }
 }
 
