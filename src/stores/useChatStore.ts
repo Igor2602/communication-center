@@ -10,6 +10,7 @@ export const useChatStore = defineStore('chat', () => {
   // State
   const conversations = ref<Conversation[]>([])
   const archivedConversations = ref<Conversation[]>([])
+  const contacts = ref<User[]>([])
   const selectedConversationId = ref<string | null>(null)
   const messagesByConversation = ref<Record<string, Message[]>>({})
   const isLoadingConversations = ref(false)
@@ -34,8 +35,6 @@ export const useChatStore = defineStore('chat', () => {
 
   const isSelectedTyping = computed(() => selectedConversation.value?.isTyping ?? false)
 
-  const isSelectedArchived = computed(() => selectedConversation.value?.isArchived ?? false)
-
   const archivedCount = computed(() => archivedConversations.value.length)
 
   // Actions
@@ -47,6 +46,10 @@ export const useChatStore = defineStore('chat', () => {
     } finally {
       isLoadingConversations.value = false
     }
+  }
+
+  async function fetchContacts() {
+    contacts.value = await chatService.getContacts()
   }
 
   function setViewingArchived(value: boolean) {
@@ -113,11 +116,9 @@ export const useChatStore = defineStore('chat', () => {
     const conversation = conversations.value.find((c) => c.id === conversationId)
     if (!conversation) return
 
-    // Show typing after a short delay
     setTimeout(() => {
       conversation.isTyping = true
 
-      // Send the reply after typing for a while
       setTimeout(async () => {
         conversation.isTyping = false
 
@@ -135,7 +136,6 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function startConversation(contact: User) {
-    // Check active conversations
     const existing = conversations.value.find(
       (c) => c.participant.id === contact.id,
     )
@@ -145,7 +145,6 @@ export const useChatStore = defineStore('chat', () => {
       return
     }
 
-    // Check archived conversations — unarchive if found
     const archived = archivedConversations.value.find(
       (c) => c.participant.id === contact.id,
     )
@@ -156,19 +155,11 @@ export const useChatStore = defineStore('chat', () => {
       return
     }
 
-    // Create new conversation
     const conversation = await chatService.createConversation(contact)
     conversations.value.unshift(conversation)
     messagesByConversation.value[conversation.id] = []
     isViewingArchived.value = false
     selectedConversationId.value = conversation.id
-  }
-
-  function setTyping(conversationId: string, isTyping: boolean) {
-    const conversation = conversations.value.find((c) => c.id === conversationId)
-    if (conversation) {
-      conversation.isTyping = isTyping
-    }
   }
 
   async function archiveConversation(conversationId: string) {
@@ -205,6 +196,7 @@ export const useChatStore = defineStore('chat', () => {
     // State
     conversations,
     archivedConversations,
+    contacts,
     selectedConversationId,
     messagesByConversation,
     isLoadingConversations,
@@ -217,16 +209,15 @@ export const useChatStore = defineStore('chat', () => {
     selectedConversation,
     selectedMessages,
     isSelectedTyping,
-    isSelectedArchived,
     archivedCount,
 
     // Actions
     fetchConversations,
+    fetchContacts,
     setViewingArchived,
     selectConversation,
     fetchMessages,
     sendMessage,
-    setTyping,
     startConversation,
     archiveConversation,
     unarchiveConversation,

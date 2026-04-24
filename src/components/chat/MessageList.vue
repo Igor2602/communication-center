@@ -4,6 +4,7 @@ import type { Attachment, Message, User } from '@/types/chat'
 import MessageBubble from './MessageBubble.vue'
 import DateDivider from './DateDivider.vue'
 import TypingIndicator from './TypingIndicator.vue'
+import { useTimeFormat } from '@/composables/useTimeFormat'
 
 const props = defineProps<{
   messages: Message[]
@@ -17,6 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const listRef = ref<HTMLElement | null>(null)
+const { formatDateDivider } = useTimeFormat()
 
 interface DateGroup {
   date: string
@@ -33,7 +35,7 @@ const groupedMessages = computed<DateGroup[]>(() => {
     if (groups.length === 0 || groups[groups.length - 1].date !== dateKey) {
       groups.push({
         date: dateKey,
-        label: formatDateLabel(dateKey),
+        label: formatDateDivider(dateKey),
         messages: [message],
       })
     } else {
@@ -43,35 +45,6 @@ const groupedMessages = computed<DateGroup[]>(() => {
 
   return groups
 })
-
-function formatDateLabel(dateKey: string): string {
-  const date = new Date(dateKey + 'T12:00:00')
-  const now = new Date()
-
-  const isToday =
-    date.getDate() === now.getDate() &&
-    date.getMonth() === now.getMonth() &&
-    date.getFullYear() === now.getFullYear()
-  if (isToday) {
-    return `Hoje, ${date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}`
-  }
-
-  const yesterday = new Date(now)
-  yesterday.setDate(yesterday.getDate() - 1)
-  const isYesterday =
-    date.getDate() === yesterday.getDate() &&
-    date.getMonth() === yesterday.getMonth() &&
-    date.getFullYear() === yesterday.getFullYear()
-  if (isYesterday) {
-    return `Ontem, ${date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}`
-  }
-
-  return date.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  })
-}
 
 function getSenderName(message: Message): string {
   return message.isOutgoing ? 'Você' : props.participant.name
@@ -89,16 +62,8 @@ function scrollToBottom() {
   })
 }
 
-// Scroll to bottom on initial load and when conversation changes
 watch(
-  () => props.messages,
-  () => scrollToBottom(),
-  { flush: 'post' },
-)
-
-// Scroll to bottom when new messages arrive or typing state changes
-watch(
-  () => [props.messages.length, props.isTyping],
+  () => [props.messages, props.messages.length, props.isTyping],
   () => scrollToBottom(),
   { flush: 'post' },
 )

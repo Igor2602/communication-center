@@ -2,27 +2,27 @@
 import { ref, computed, onMounted } from 'vue'
 import type { User } from '@/types/chat'
 import Avatar from 'primevue/avatar'
-import { chatService } from '@/services/chatService'
+import { useChatStore } from '@/stores/useChatStore'
 
 const emit = defineEmits<{
   select: [contact: User]
   back: []
 }>()
 
-const contacts = ref<User[]>([])
+const chatStore = useChatStore()
 const searchQuery = ref('')
 
 const filteredContacts = computed(() => {
   const query = searchQuery.value.toLowerCase().trim()
-  if (!query) return contacts.value
+  if (!query) return chatStore.contacts
 
-  return contacts.value.filter((contact) =>
+  return chatStore.contacts.filter((contact) =>
     contact.name.toLowerCase().includes(query),
   )
 })
 
-onMounted(async () => {
-  contacts.value = await chatService.getContacts()
+onMounted(() => {
+  chatStore.fetchContacts()
 })
 </script>
 
