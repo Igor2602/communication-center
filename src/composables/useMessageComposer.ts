@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 
-const MAX_LENGTH = 500
+const MAX_LENGTH = 2000
 
 export function useMessageComposer(onSend: (content: string) => void) {
   const content = ref('')

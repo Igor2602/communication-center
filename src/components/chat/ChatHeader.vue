@@ -37,8 +37,8 @@ function handleToggleArchive() {
       :icon="conversation.isArchived ? 'pi pi-replay' : 'pi pi-inbox'"
       :label="conversation.isArchived ? 'Desarquivar' : 'Arquivar'"
       severity="secondary"
-      text
-      :aria-label="conversation.isArchived ? 'Desarquivar conversa' : 'Arquivar conversa'"
+      outlined
+      :aria-label="conversation.isArchived ? 'Desarquivar' : 'Arquivar'"
       class="chat-header__archive"
       @click="handleToggleArchive"
     />

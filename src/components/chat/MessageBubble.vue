@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { Message } from '@/types/chat'
+import Avatar from 'primevue/avatar'
 
 const props = defineProps<{
   message: Message
+  senderName: string
+  senderAvatar: string
 }>()
 
 function formatTime(isoString: string): string {
@@ -18,8 +21,19 @@ function formatTime(isoString: string): string {
     class="message-bubble"
     :class="{ 'message-bubble--outgoing': props.message.isOutgoing }"
   >
-    <div class="message-bubble__body">
-      <p class="message-bubble__content">{{ props.message.content }}</p>
+    <Avatar
+      v-if="!props.message.isOutgoing"
+      :image="props.senderAvatar"
+      :alt="props.senderName"
+      shape="circle"
+      class="message-bubble__avatar"
+    />
+
+    <div class="message-bubble__wrapper">
+      <span class="message-bubble__sender">{{ props.senderName }}</span>
+      <div class="message-bubble__body">
+        <p class="message-bubble__content">{{ props.message.content }}</p>
+      </div>
       <time
         class="message-bubble__time"
         :datetime="props.message.timestamp"
@@ -27,34 +41,66 @@ function formatTime(isoString: string): string {
         {{ formatTime(props.message.timestamp) }}
       </time>
     </div>
+
+    <Avatar
+      v-if="props.message.isOutgoing"
+      :image="props.senderAvatar"
+      :alt="props.senderName"
+      shape="circle"
+      class="message-bubble__avatar"
+    />
   </div>
 </template>
 
 <style scoped lang="scss">
+$color-bubble-incoming: #fdf6e3;
+$color-bubble-outgoing: #1e293b;
+
 .message-bubble {
   display: flex;
-  margin-bottom: $spacing-xs;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
   animation: message-enter 250ms ease both;
 
   &--outgoing {
-    justify-content: flex-end;
+    flex-direction: row-reverse;
+
+    .message-bubble__wrapper {
+      align-items: flex-end;
+    }
 
     .message-bubble__body {
-      background-color: $color-primary;
+      background-color: $color-bubble-outgoing;
       color: $color-text-inverse;
       border-radius: $radius-lg $radius-lg $radius-sm $radius-lg;
     }
 
     .message-bubble__time {
-      color: rgba($color-text-inverse, 0.7);
+      text-align: right;
     }
   }
 
-  &__body {
+  &__avatar {
+    flex-shrink: 0;
+    margin-top: $spacing-xs;
+  }
+
+  &__wrapper {
+    @include flex-column;
     max-width: 65%;
+    gap: $spacing-xs;
+  }
+
+  &__sender {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+
+  &__body {
     padding: $spacing-sm $spacing-md;
-    background-color: $color-bg-primary;
-    border: 1px solid $color-border;
+    background-color: $color-bubble-incoming;
     border-radius: $radius-lg $radius-lg $radius-lg $radius-sm;
   }
 
@@ -65,11 +111,8 @@ function formatTime(isoString: string): string {
   }
 
   &__time {
-    display: block;
-    margin-top: $spacing-xs;
     font-size: $font-size-xs;
     color: $color-text-secondary;
-    text-align: right;
   }
 }
 

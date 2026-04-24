@@ -1,6 +1,7 @@
 import type { Conversation, Message, SendMessagePayload } from '@/types/chat'
 import { mockConversations } from '@/mocks/conversations'
 import { mockMessages } from '@/mocks/messages'
+import { currentUser } from '@/mocks/users'
 
 const SIMULATED_DELAY_MS = 400
 
@@ -8,7 +9,26 @@ function delay<T>(value: T): Promise<T> {
   return new Promise((resolve) => setTimeout(() => resolve(value), SIMULATED_DELAY_MS))
 }
 
-let nextMessageId = 100
+function generateId(): string {
+  return crypto.randomUUID()
+}
+
+const autoReplies = [
+  'Entendi, vou verificar aqui e te retorno!',
+  'Boa, obrigado por avisar!',
+  'Perfeito, pode deixar comigo.',
+  'Combinado! Qualquer coisa me chama.',
+  'Vou dar uma olhada e já te falo.',
+  'Ótimo, vamos seguir assim então.',
+  'Recebi! Vou analisar com calma.',
+  'Show, depois a gente alinha os detalhes.',
+  'Beleza, estou de acordo!',
+  'Ok, vou encaminhar para o time.',
+]
+
+function getRandomReply(): string {
+  return autoReplies[Math.floor(Math.random() * autoReplies.length)]
+}
 
 export const chatService = {
   getConversations(): Promise<Conversation[]> {
@@ -28,9 +48,9 @@ export const chatService = {
 
   sendMessage(payload: SendMessagePayload): Promise<Message> {
     const message: Message = {
-      id: `msg-new-${++nextMessageId}`,
+      id: generateId(),
       conversationId: payload.conversationId,
-      senderId: 'user-me',
+      senderId: currentUser.id,
       content: payload.content,
       timestamp: new Date().toISOString(),
       isOutgoing: true,
@@ -48,6 +68,33 @@ export const chatService = {
     }
 
     return delay(message)
+  },
+
+  simulateReply(conversationId: string): Promise<Message> {
+    const content = getRandomReply()
+    const conversation = mockConversations.find((c) => c.id === conversationId)
+    const senderId = conversation?.participant.id ?? 'unknown'
+
+    const reply: Message = {
+      id: generateId(),
+      conversationId,
+      senderId,
+      content,
+      timestamp: new Date().toISOString(),
+      isOutgoing: false,
+    }
+
+    const conversationMessages = mockMessages[conversationId]
+    if (conversationMessages) {
+      conversationMessages.push(reply)
+    }
+
+    if (conversation) {
+      conversation.lastMessage = content
+      conversation.lastMessageAt = reply.timestamp
+    }
+
+    return delay(reply)
   },
 
   archiveConversation(conversationId: string): Promise<void> {

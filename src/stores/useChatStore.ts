@@ -3,6 +3,9 @@ import { ref, computed } from 'vue'
 import type { Conversation, Message } from '@/types/chat'
 import { chatService } from '@/services/chatService'
 
+const TYPING_DELAY_MS = 1500
+const REPLY_DELAY_MS = 3000
+
 export const useChatStore = defineStore('chat', () => {
   // State
   const conversations = ref<Conversation[]>([])
@@ -76,10 +79,12 @@ export const useChatStore = defineStore('chat', () => {
   async function sendMessage(content: string) {
     if (!selectedConversationId.value || !content.trim()) return
 
+    const conversationId = selectedConversationId.value
+
     isSendingMessage.value = true
     try {
       const message = await chatService.sendMessage({
-        conversationId: selectedConversationId.value,
+        conversationId,
         content: content.trim(),
       })
 
@@ -98,6 +103,33 @@ export const useChatStore = defineStore('chat', () => {
     } finally {
       isSendingMessage.value = false
     }
+
+    simulateReply(conversationId)
+  }
+
+  function simulateReply(conversationId: string) {
+    const conversation = conversations.value.find((c) => c.id === conversationId)
+    if (!conversation) return
+
+    // Show typing after a short delay
+    setTimeout(() => {
+      conversation.isTyping = true
+
+      // Send the reply after typing for a while
+      setTimeout(async () => {
+        conversation.isTyping = false
+
+        const reply = await chatService.simulateReply(conversationId)
+
+        const messages = messagesByConversation.value[conversationId]
+        if (messages) {
+          messages.push(reply)
+        }
+
+        conversation.lastMessage = reply.content
+        conversation.lastMessageAt = reply.timestamp
+      }, REPLY_DELAY_MS)
+    }, TYPING_DELAY_MS)
   }
 
   function setTyping(conversationId: string, isTyping: boolean) {
@@ -105,26 +137,6 @@ export const useChatStore = defineStore('chat', () => {
     if (conversation) {
       conversation.isTyping = isTyping
     }
-  }
-
-  function simulateIncomingTyping() {
-    const target = conversations.value.find((c) => c.id === 'conv-2')
-    if (!target) return
-
-    const conv = target
-    let timerId: ReturnType<typeof setTimeout>
-
-    function cycle() {
-      if (!conversations.value.includes(conv)) return
-      conv.isTyping = true
-      timerId = setTimeout(() => {
-        conv.isTyping = false
-        timerId = setTimeout(cycle, 6000)
-      }, 3000)
-    }
-
-    cycle()
-    return () => clearTimeout(timerId)
   }
 
   async function archiveConversation(conversationId: string) {
@@ -183,7 +195,6 @@ export const useChatStore = defineStore('chat', () => {
     fetchMessages,
     sendMessage,
     setTyping,
-    simulateIncomingTyping,
     archiveConversation,
     unarchiveConversation,
   }

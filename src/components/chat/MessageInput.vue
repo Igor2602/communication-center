@@ -23,14 +23,21 @@ const {
         v-model="content"
         class="message-input__textarea"
         :class="{ 'message-input__textarea--over-limit': isOverLimit }"
-        placeholder="Digite uma mensagem..."
+        placeholder="Escreva uma mensagem"
         aria-label="Mensagem"
         rows="1"
         @keydown="handleKeydown"
       />
+      <button
+        type="button"
+        class="message-input__attach"
+        aria-label="Anexar arquivo"
+      >
+        <i class="pi pi-paperclip" />
+      </button>
       <Button
         icon="pi pi-send"
-        rounded
+        label="Enviar"
         aria-label="Enviar mensagem"
         class="message-input__send"
         :disabled="!canSend"
@@ -39,14 +46,12 @@ const {
     </div>
 
     <div class="message-input__footer">
-      <span class="message-input__hint">
-        <kbd>Shift</kbd> + <kbd>Enter</kbd> para nova linha
-      </span>
-      <span
-        class="message-input__counter"
-        :class="{ 'message-input__counter--over': isOverLimit }"
-      >
-        {{ characterCount }}/{{ maxLength }}
+      <span class="message-input__counter">
+        <span :class="{ 'message-input__counter--over': isOverLimit }">
+          {{ characterCount }}/{{ maxLength }} caracteres
+        </span>
+        <span class="message-input__separator">|</span>
+        <span>Shift + Enter para adicionar uma nova linha</span>
       </span>
     </div>
   </div>
@@ -72,7 +77,7 @@ const {
     font-size: $font-size-sm;
     line-height: $line-height-base;
     color: $color-text-primary;
-    background-color: $color-bg-secondary;
+    background-color: $color-bg-primary;
     outline: none;
     @include transition(border-color, box-shadow);
     field-sizing: content;
@@ -96,28 +101,30 @@ const {
     }
   }
 
+  &__attach {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    color: $color-text-secondary;
+    @include transition(color);
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    i {
+      font-size: $font-size-lg;
+    }
+  }
+
   &__send {
     flex-shrink: 0;
   }
 
   &__footer {
-    @include flex-between;
     margin-top: $spacing-xs;
     padding: 0 $spacing-xs;
-  }
-
-  &__hint {
-    font-size: $font-size-xs;
-    color: $color-text-secondary;
-
-    kbd {
-      padding: 1px 4px;
-      font-family: $font-family-base;
-      font-size: $font-size-xs;
-      background-color: $color-bg-tertiary;
-      border: 1px solid $color-border;
-      border-radius: $radius-sm;
-    }
   }
 
   &__counter {
@@ -128,6 +135,11 @@ const {
       color: $color-error;
       font-weight: $font-weight-semibold;
     }
+  }
+
+  &__separator {
+    margin: 0 $spacing-xs;
+    color: $color-border;
   }
 }
 </style>

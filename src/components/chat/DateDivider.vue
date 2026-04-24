@@ -6,22 +6,31 @@ defineProps<{
 
 <template>
   <div class="date-divider" role="separator">
+    <hr class="date-divider__line" />
     <span class="date-divider__label">{{ label }}</span>
+    <hr class="date-divider__line" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .date-divider {
-  @include flex-center;
-  padding: $spacing-md 0;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-lg 0 $spacing-md;
+
+  &__line {
+    flex: 1;
+    border: none;
+    border-top: 1px solid $color-border;
+  }
 
   &__label {
-    padding: $spacing-xs $spacing-md;
+    flex-shrink: 0;
     font-size: $font-size-xs;
-    font-weight: $font-weight-medium;
-    color: $color-text-secondary;
-    background-color: $color-bg-tertiary;
-    border-radius: $radius-full;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    white-space: nowrap;
   }
 }
 </style>

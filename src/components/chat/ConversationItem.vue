@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { Conversation } from '@/types/chat'
 import Avatar from 'primevue/avatar'
 import Badge from 'primevue/badge'
@@ -14,6 +15,17 @@ defineEmits<{
 }>()
 
 const { formatConversationTime } = useTimeFormat()
+
+const firstName = computed(() =>
+  props.conversation.participant.name.split(' ')[0],
+)
+
+const previewText = computed(() => {
+  if (props.conversation.isTyping) {
+    return `${firstName.value}: Digitando...`
+  }
+  return `${firstName.value}: ${props.conversation.lastMessage}`
+})
 </script>
 
 <template>
@@ -23,7 +35,7 @@ const { formatConversationTime } = useTimeFormat()
     type="button"
     role="option"
     :aria-selected="isActive"
-    :aria-label="`Conversation with ${props.conversation.participant.name}`"
+    :aria-label="`Conversa com ${props.conversation.participant.name}`"
     @click="$emit('select', props.conversation.id)"
   >
     <Avatar
@@ -49,13 +61,10 @@ const { formatConversationTime } = useTimeFormat()
 
       <div class="conversation-item__bottom">
         <span
-          v-if="props.conversation.isTyping"
-          class="conversation-item__typing"
+          class="conversation-item__preview"
+          :class="{ 'conversation-item__preview--typing': props.conversation.isTyping }"
         >
-          Digitando...
-        </span>
-        <span v-else class="conversation-item__preview">
-          {{ props.conversation.lastMessage }}
+          {{ previewText }}
         </span>
         <Badge
           v-if="props.conversation.unreadCount > 0"
@@ -120,12 +129,10 @@ const { formatConversationTime } = useTimeFormat()
     @include truncate;
     font-size: $font-size-sm;
     color: $color-text-secondary;
-  }
 
-  &__typing {
-    font-size: $font-size-sm;
-    font-style: italic;
-    color: $color-primary;
+    &--typing {
+      font-style: italic;
+    }
   }
 
   &__badge {

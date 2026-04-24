@@ -6,12 +6,12 @@ import ChatHeader from '@/components/chat/ChatHeader.vue'
 import MessageList from '@/components/chat/MessageList.vue'
 import MessageInput from '@/components/chat/MessageInput.vue'
 import { useChatStore } from '@/stores/useChatStore'
+import { currentUser } from '@/mocks/users'
 
 const chatStore = useChatStore()
 
 onMounted(() => {
   chatStore.fetchConversations()
-  chatStore.simulateIncomingTyping()
 })
 
 function handleArchive(conversationId: string) {
@@ -37,8 +37,9 @@ function handleUnarchive(conversationId: string) {
       <template v-if="chatStore.selectedConversation" #messages>
         <MessageList
           :messages="chatStore.selectedMessages"
+          :participant="chatStore.selectedConversation.participant"
+          :current-user-avatar="currentUser.avatar"
           :is-typing="chatStore.isSelectedTyping"
-          :typing-name="chatStore.selectedConversation?.participant.name"
         />
       </template>
       <template v-if="chatStore.selectedConversation" #composer>

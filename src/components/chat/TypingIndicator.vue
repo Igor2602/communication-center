@@ -1,71 +1,65 @@
 <script setup lang="ts">
+import Avatar from 'primevue/avatar'
+
 defineProps<{
   name: string
+  avatar: string
 }>()
 </script>
 
 <template>
   <div class="typing-indicator" aria-live="polite">
-    <div class="typing-indicator__dots">
-      <span class="typing-indicator__dot" />
-      <span class="typing-indicator__dot" />
-      <span class="typing-indicator__dot" />
+    <Avatar
+      :image="avatar"
+      :alt="name"
+      shape="circle"
+      class="typing-indicator__avatar"
+    />
+
+    <div class="typing-indicator__wrapper">
+      <span class="typing-indicator__name">{{ name }}</span>
+      <div class="typing-indicator__bubble">
+        <em class="typing-indicator__text">Digitando...</em>
+      </div>
     </div>
-    <span class="typing-indicator__label">{{ name }} está digitando</span>
   </div>
 </template>
 
 <style scoped lang="scss">
+$color-bubble-incoming: #fdf6e3;
+
 .typing-indicator {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: $spacing-sm;
-  padding: $spacing-xs 0;
+  margin-bottom: $spacing-lg;
   animation: typing-fade-in 200ms ease both;
 
-  &__dots {
-    display: flex;
-    align-items: center;
-    gap: 3px;
+  &__avatar {
+    flex-shrink: 0;
+    margin-top: $spacing-xs;
+  }
+
+  &__wrapper {
+    @include flex-column;
+    gap: $spacing-xs;
+  }
+
+  &__name {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+
+  &__bubble {
     padding: $spacing-sm $spacing-md;
-    background-color: $color-bg-primary;
-    border: 1px solid $color-border;
+    background-color: $color-bubble-incoming;
     border-radius: $radius-lg $radius-lg $radius-lg $radius-sm;
   }
 
-  &__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: $radius-full;
-    background-color: $color-text-secondary;
-    animation: typing-bounce 1.2s ease-in-out infinite;
-
-    &:nth-child(2) {
-      animation-delay: 0.15s;
-    }
-
-    &:nth-child(3) {
-      animation-delay: 0.3s;
-    }
-  }
-
-  &__label {
-    font-size: $font-size-xs;
+  &__text {
+    font-size: $font-size-sm;
     color: $color-text-secondary;
-    font-style: italic;
-  }
-}
-
-@keyframes typing-bounce {
-  0%,
-  60%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.4;
-  }
-  30% {
-    transform: translateY(-4px);
-    opacity: 1;
   }
 }
 

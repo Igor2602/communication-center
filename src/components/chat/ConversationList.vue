@@ -33,6 +33,19 @@ function showActive() {
 
 <template>
   <div class="conversation-list">
+    <div class="conversation-list__search">
+      <div class="conversation-list__search-wrapper">
+        <i class="pi pi-search conversation-list__search-icon" />
+        <input
+          v-model="searchQuery"
+          type="search"
+          class="conversation-list__search-input"
+          placeholder="Buscar conversas"
+          aria-label="Buscar conversas"
+        />
+      </div>
+    </div>
+
     <div v-if="chatStore.isViewingArchived" class="conversation-list__archived-header">
       <button
         type="button"
@@ -45,15 +58,15 @@ function showActive() {
       </button>
     </div>
 
-    <div class="conversation-list__search">
-      <input
-        v-model="searchQuery"
-        type="search"
-        class="conversation-list__search-input"
-        placeholder="Buscar conversas..."
-        aria-label="Buscar conversas"
-      />
-    </div>
+    <button
+      v-if="!chatStore.isViewingArchived && chatStore.archivedCount > 0"
+      type="button"
+      class="conversation-list__archived-link"
+      @click="showArchived"
+    >
+      <i class="pi pi-inbox" />
+      <span>Conversas arquivadas</span>
+    </button>
 
     <div
       class="conversation-list__items"
@@ -82,17 +95,6 @@ function showActive() {
         Nenhuma conversa arquivada
       </p>
     </div>
-
-    <button
-      v-if="!chatStore.isViewingArchived && chatStore.archivedCount > 0"
-      type="button"
-      class="conversation-list__archived-link"
-      @click="showArchived"
-    >
-      <i class="pi pi-inbox" />
-      <span>Conversas arquivadas</span>
-      <span class="conversation-list__archived-count">{{ chatStore.archivedCount }}</span>
-    </button>
   </div>
 </template>
 
@@ -100,6 +102,45 @@ function showActive() {
 .conversation-list {
   @include flex-column;
   height: 100%;
+
+  &__search {
+    padding: 0 $spacing-lg $spacing-md;
+  }
+
+  &__search-wrapper {
+    position: relative;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: $spacing-md;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    pointer-events: none;
+  }
+
+  &__search-input {
+    width: 100%;
+    padding: $spacing-sm $spacing-md $spacing-sm 2.25rem;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    background-color: $color-bg-secondary;
+    outline: none;
+    @include transition(border-color, box-shadow);
+
+    &::placeholder {
+      color: $color-text-secondary;
+    }
+
+    &:focus {
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.15);
+    }
+  }
 
   &__archived-header {
     padding: $spacing-sm $spacing-lg;
@@ -120,28 +161,23 @@ function showActive() {
     }
   }
 
-  &__search {
-    padding: $spacing-md $spacing-lg;
-  }
-
-  &__search-input {
+  &__archived-link {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
     width: 100%;
-    padding: $spacing-sm $spacing-md;
-    border: 1px solid $color-border;
-    border-radius: $radius-md;
+    padding: $spacing-sm $spacing-lg;
+    margin-bottom: $spacing-xs;
     font-size: $font-size-sm;
-    color: $color-text-primary;
-    background-color: $color-bg-secondary;
-    outline: none;
-    @include transition(border-color, box-shadow);
+    color: $color-text-secondary;
+    @include transition(background-color);
 
-    &::placeholder {
-      color: $color-text-secondary;
+    &:hover {
+      background-color: $color-bg-tertiary;
     }
 
-    &:focus {
-      border-color: $color-primary;
-      box-shadow: 0 0 0 2px rgba($color-primary, 0.15);
+    i {
+      font-size: $font-size-sm;
     }
   }
 
@@ -155,38 +191,6 @@ function showActive() {
     text-align: center;
     color: $color-text-secondary;
     font-size: $font-size-sm;
-  }
-
-  &__archived-link {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    width: 100%;
-    padding: $spacing-md $spacing-lg;
-    border-top: 1px solid $color-border;
-    font-size: $font-size-sm;
-    color: $color-primary;
-    @include transition(background-color);
-
-    &:hover {
-      background-color: $color-bg-tertiary;
-    }
-
-    i {
-      font-size: $font-size-base;
-    }
-  }
-
-  &__archived-count {
-    margin-left: auto;
-    padding: 1px $spacing-sm;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-semibold;
-    color: $color-text-inverse;
-    background-color: $color-secondary;
-    border-radius: $radius-full;
-    min-width: 20px;
-    text-align: center;
   }
 }
 </style>
