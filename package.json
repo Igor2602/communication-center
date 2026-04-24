@@ -9,11 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.32",
-    "vue-router": "^4.5.1",
+    "@primevue/themes": "^4.3.8",
     "pinia": "^3.0.3",
+    "primeicons": "^7.0.0",
     "primevue": "^4.3.8",
-    "@primevue/themes": "^4.3.8"
+    "vue": "^3.5.32",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@types/node": "^24.12.2",

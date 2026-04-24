@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import pinia from './stores'
 
+import 'primeicons/primeicons.css'
 import './styles/main.scss'
 
 const app = createApp(App)
