@@ -62,13 +62,4 @@ $color-bubble-incoming: #fdf6e3;
     color: $color-text-secondary;
   }
 }
-
-@keyframes typing-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 </style>
