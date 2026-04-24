@@ -54,6 +54,7 @@ export const chatService = {
       content: payload.content,
       timestamp: new Date().toISOString(),
       isOutgoing: true,
+      status: 'sent',
       attachment: payload.attachment,
     }
 
@@ -83,6 +84,7 @@ export const chatService = {
       content,
       timestamp: new Date().toISOString(),
       isOutgoing: false,
+      status: 'read',
     }
 
     const conversationMessages = mockMessages[conversationId]

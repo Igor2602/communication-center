@@ -10,6 +10,7 @@ const baseMessage: Message = {
   content: 'Olá, tudo bem?',
   timestamp: '2026-04-23T14:30:00Z',
   isOutgoing: false,
+  status: 'read',
 }
 
 function createWrapper(message: Message) {

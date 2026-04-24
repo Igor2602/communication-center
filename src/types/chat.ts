@@ -4,6 +4,8 @@ export interface User {
   avatar: string
 }
 
+export type MessageStatus = 'sent' | 'delivered' | 'read'
+
 export interface Attachment {
   name: string
   type: 'image' | 'pdf'
@@ -17,6 +19,7 @@ export interface Message {
   content: string
   timestamp: string
   isOutgoing: boolean
+  status: MessageStatus
   attachment?: Attachment
 }
 

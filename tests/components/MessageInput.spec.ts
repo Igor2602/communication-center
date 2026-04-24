@@ -16,6 +16,7 @@ vi.mock('@/services/chatService', () => ({
       content: 'test',
       timestamp: new Date().toISOString(),
       isOutgoing: true,
+      status: 'sent',
     }),
     simulateReply: vi.fn().mockResolvedValue({
       id: 'msg-2',
@@ -24,6 +25,7 @@ vi.mock('@/services/chatService', () => ({
       content: 'reply',
       timestamp: new Date().toISOString(),
       isOutgoing: false,
+      status: 'read',
     }),
   },
 }))

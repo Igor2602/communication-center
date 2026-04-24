@@ -63,12 +63,24 @@ function formatTime(isoString: string): string {
           {{ props.message.content }}
         </p>
       </div>
-      <time
-        class="message-bubble__time"
-        :datetime="props.message.timestamp"
-      >
-        {{ formatTime(props.message.timestamp) }}
-      </time>
+      <div class="message-bubble__meta">
+        <time
+          class="message-bubble__time"
+          :datetime="props.message.timestamp"
+        >
+          {{ formatTime(props.message.timestamp) }}
+        </time>
+        <i
+          v-if="props.message.isOutgoing"
+          class="message-bubble__status"
+          :class="{
+            'pi pi-check': props.message.status === 'sent',
+            'pi pi-check-circle': props.message.status === 'delivered',
+            'pi pi-check-circle message-bubble__status--read': props.message.status === 'read',
+          }"
+          :aria-label="props.message.status"
+        />
+      </div>
     </div>
 
     <Avatar
@@ -193,9 +205,24 @@ $color-bubble-outgoing: #1e293b;
     @include truncate;
   }
 
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+
   &__time {
     font-size: $font-size-xs;
     color: $color-text-secondary;
+  }
+
+  &__status {
+    font-size: 0.7rem;
+    color: $color-text-secondary;
+
+    &--read {
+      color: $color-primary;
+    }
   }
 }
 
