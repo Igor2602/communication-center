@@ -114,9 +114,9 @@ The service returns data without mutating shared state — the store is the sing
 
 ## Testing
 
-46 unit tests across 7 test files using Vitest + Vue Test Utils:
+50 unit tests across 7 test files using Vitest + Vue Test Utils:
 
-- **Store tests** — fetch, select, send, archive, message caching
+- **Store tests** — fetch, select, send, archive, message caching, clearSelection, attachment-only send, send guards
 - **Composable tests** — `useCharacterLimit` (boundary conditions), `useDebounce` (timing)
 - **Component tests** — `ConversationItem`, `MessageBubble`, `MessageInput`, `DateDivider`
 
