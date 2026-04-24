@@ -11,6 +11,7 @@ const chatStore = useChatStore()
 
 onMounted(() => {
   chatStore.fetchConversations()
+  chatStore.simulateIncomingTyping()
 })
 
 function handleArchive(conversationId: string) {
@@ -29,7 +30,11 @@ function handleArchive(conversationId: string) {
         />
       </template>
       <template v-if="chatStore.selectedConversation" #messages>
-        <MessageList :messages="chatStore.selectedMessages" />
+        <MessageList
+          :messages="chatStore.selectedMessages"
+          :is-typing="chatStore.isSelectedTyping"
+          :typing-name="chatStore.selectedConversation?.participant.name"
+        />
       </template>
       <template v-if="chatStore.selectedConversation" #composer>
         <MessageInput />

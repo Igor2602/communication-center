@@ -3,9 +3,12 @@ import { computed, watch, ref, nextTick } from 'vue'
 import type { Message } from '@/types/chat'
 import MessageBubble from './MessageBubble.vue'
 import DateDivider from './DateDivider.vue'
+import TypingIndicator from './TypingIndicator.vue'
 
 const props = defineProps<{
   messages: Message[]
+  isTyping?: boolean
+  typingName?: string
 }>()
 
 const listRef = ref<HTMLElement | null>(null)
@@ -70,7 +73,7 @@ function scrollToBottom() {
 }
 
 watch(
-  () => props.messages.length,
+  () => [props.messages.length, props.isTyping],
   () => scrollToBottom(),
   { flush: 'post' },
 )
@@ -86,6 +89,10 @@ watch(
         :message="message"
       />
     </template>
+    <TypingIndicator
+      v-if="isTyping && typingName"
+      :name="typingName"
+    />
   </div>
 </template>
 

@@ -22,6 +22,8 @@ export const useChatStore = defineStore('chat', () => {
     return messagesByConversation.value[selectedConversationId.value] ?? []
   })
 
+  const isSelectedTyping = computed(() => selectedConversation.value?.isTyping ?? false)
+
   // Actions
   async function fetchConversations() {
     isLoadingConversations.value = true
@@ -87,6 +89,26 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
+  function simulateIncomingTyping() {
+    const target = conversations.value.find((c) => c.id === 'conv-2')
+    if (!target) return
+
+    const conv = target
+    let timerId: ReturnType<typeof setTimeout>
+
+    function cycle() {
+      if (!conversations.value.includes(conv)) return
+      conv.isTyping = true
+      timerId = setTimeout(() => {
+        conv.isTyping = false
+        timerId = setTimeout(cycle, 6000)
+      }, 3000)
+    }
+
+    cycle()
+    return () => clearTimeout(timerId)
+  }
+
   async function archiveConversation(conversationId: string) {
     await chatService.archiveConversation(conversationId)
     conversations.value = conversations.value.filter((c) => c.id !== conversationId)
@@ -108,6 +130,7 @@ export const useChatStore = defineStore('chat', () => {
     // Getters
     selectedConversation,
     selectedMessages,
+    isSelectedTyping,
 
     // Actions
     fetchConversations,
@@ -115,6 +138,7 @@ export const useChatStore = defineStore('chat', () => {
     fetchMessages,
     sendMessage,
     setTyping,
+    simulateIncomingTyping,
     archiveConversation,
   }
 })
