@@ -50,21 +50,21 @@
   transition-timing-function: ease;
 }
 
-@mixin custom-scrollbar {
+@mixin custom-scrollbar($width: 8px, $track: #e8e8e8, $thumb: #7a7a7a, $radius: 100px) {
   &::-webkit-scrollbar {
-    width: 8px;
+    width: $width;
   }
 
   &::-webkit-scrollbar-track {
-    background: #e8e8e8;
-    border-radius: 100px;
+    background: $track;
+    border-radius: $radius;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #7a7a7a;
-    border-radius: 100px;
+    background: $thumb;
+    border-radius: $radius;
   }
 
   scrollbar-width: thin;
-  scrollbar-color: #7a7a7a #e8e8e8;
+  scrollbar-color: $thumb $track;
 }

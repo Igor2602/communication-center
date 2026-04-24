@@ -74,23 +74,23 @@ const previewText = computed(() => {
 .conversation-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: $spacing-sm;
   width: 100%;
-  padding: 12px 16px;
+  padding: $spacing-md $spacing-md;
   text-align: left;
   @include transition(background-color);
 
   &:hover {
-    background-color: #f3f7fb;
+    background-color: $color-bg-hover;
   }
 
   &--active {
-    background-color: #f3f7fb;
+    background-color: $color-bg-hover;
   }
 
   &__avatar {
-    width: 42px !important;
-    height: 42px !important;
+    width: $avatar-size-md !important;
+    height: $avatar-size-md !important;
     flex-shrink: 0;
   }
 
@@ -109,21 +109,21 @@ const previewText = computed(() => {
   &__name {
     @include truncate;
     font-family: $font-family-base;
-    font-size: 16px;
+    font-size: $font-size-base;
     font-weight: $font-weight-medium;
-    line-height: 24px;
+    line-height: $line-height-base;
     letter-spacing: 0;
-    color: #334155;
+    color: $color-text-primary;
   }
 
   &__time {
     flex-shrink: 0;
     font-family: $font-family-base;
-    font-size: 14px;
+    font-size: $font-size-sm;
     font-weight: $font-weight-regular;
-    line-height: 20px;
+    line-height: $line-height-tight;
     letter-spacing: 0;
-    color: #334155;
+    color: $color-text-primary;
   }
 
   &__bottom {
@@ -134,11 +134,11 @@ const previewText = computed(() => {
   &__preview {
     @include truncate;
     font-family: $font-family-base;
-    font-size: 12px;
+    font-size: $font-size-xs;
     font-weight: $font-weight-regular;
-    line-height: 18px;
+    line-height: $line-height-base;
     letter-spacing: 0;
-    color: #64748b;
+    color: $color-text-secondary;
 
     &--typing {
       font-style: italic;
@@ -146,21 +146,19 @@ const previewText = computed(() => {
   }
 
   &__badge {
+    @include flex-center;
     flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 21px;
-    height: 21px;
-    min-width: 21px;
-    border-radius: 10.5px;
-    background-color: #0768ac;
+    width: $badge-size;
+    height: $badge-size;
+    min-width: $badge-size;
+    border-radius: $badge-radius;
+    background-color: $color-badge-bg;
     font-family: $font-family-base;
-    font-size: 11px;
+    font-size: $badge-font-size;
     font-weight: $font-weight-bold;
     line-height: 100%;
     letter-spacing: 0;
-    color: #ffffff;
+    color: $color-badge-text;
   }
 }
 </style>

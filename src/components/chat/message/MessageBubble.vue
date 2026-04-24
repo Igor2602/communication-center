@@ -82,10 +82,6 @@ function formatTime(isoString: string): string {
 </template>
 
 <style scoped lang="scss">
-$avatar-size: 28px;
-$avatar-gap: 8px;
-$indent: calc(#{$avatar-size} + #{$avatar-gap});
-
 .message-bubble {
   @include flex-column;
   align-items: flex-start;
@@ -96,22 +92,22 @@ $indent: calc(#{$avatar-size} + #{$avatar-gap});
     align-items: flex-end;
 
     .message-bubble__body {
-      background-color: #1e293b;
-      border: 1px solid #1e293b;
+      background-color: $color-message-outgoing-bg;
+      border: 1px solid $color-message-outgoing-bg;
     }
 
     .message-bubble__content {
-      color: #ffffff;
+      color: $color-text-inverse;
     }
 
     .message-bubble__body,
     .message-bubble__time {
-      margin-right: $indent;
+      margin-right: $message-bubble-indent;
       margin-left: 0;
     }
 
     .message-bubble__attachment-pdf {
-      color: #ffffff;
+      color: $color-text-inverse;
       border-color: rgba(255, 255, 255, 0.2);
     }
   }
@@ -124,39 +120,39 @@ $indent: calc(#{$avatar-size} + #{$avatar-gap});
   }
 
   &__avatar {
-    width: $avatar-size !important;
-    height: $avatar-size !important;
+    width: $avatar-size-sm !important;
+    height: $avatar-size-sm !important;
     flex-shrink: 0;
   }
 
   &__sender {
     font-family: $font-family-base;
-    font-size: 16px;
+    font-size: $font-size-base;
     font-weight: $font-weight-medium;
-    line-height: 24px;
+    line-height: $line-height-base;
     letter-spacing: 0;
-    color: #334155;
+    color: $color-text-primary;
   }
 
   &__body {
     padding: $spacing-sm $spacing-md;
-    background-color: #f3f7fb;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px 0 rgba(4, 5, 6, 0.04);
-    max-width: 65%;
-    margin-left: $indent;
+    background-color: $color-message-incoming-bg;
+    border: 1px solid $color-border;
+    border-radius: $message-bubble-radius;
+    box-shadow: $message-shadow;
+    max-width: $message-max-width;
+    margin-left: $message-bubble-indent;
   }
 
   &__content {
     font-family: $font-family-base;
-    font-size: 14px;
+    font-size: $font-size-sm;
     font-weight: $font-weight-medium;
-    line-height: 1.5;
+    line-height: $line-height-base;
     letter-spacing: 0;
-    color: #475569;
-    white-space: pre-wrap;
+    color: $color-message-text;
     word-break: break-word;
+    white-space: pre-wrap;
   }
 
   &__attachment {
@@ -172,8 +168,8 @@ $indent: calc(#{$avatar-size} + #{$avatar-gap});
   }
 
   &__attachment-image {
-    max-width: 240px;
-    max-height: 180px;
+    max-width: $attachment-image-max-width;
+    max-height: $attachment-image-max-height;
     border-radius: $radius-md;
     object-fit: cover;
     @include transition(opacity);
@@ -210,13 +206,13 @@ $indent: calc(#{$avatar-size} + #{$avatar-gap});
 
   &__time {
     font-family: $font-family-base;
-    font-size: 12px;
+    font-size: $font-size-xs;
     font-weight: $font-weight-regular;
-    line-height: 20px;
+    line-height: $line-height-tight;
     letter-spacing: 0;
-    color: #64748b;
+    color: $color-text-secondary;
     margin-top: $spacing-xs;
-    margin-left: $indent;
+    margin-left: $message-bubble-indent;
   }
 }
 </style>

@@ -84,49 +84,49 @@ function handleToggleArchive() {
   }
 
   &__avatar {
-    width: 42px !important;
-    height: 42px !important;
+    width: $avatar-size-md !important;
+    height: $avatar-size-md !important;
     flex-shrink: 0;
   }
 
   &__name {
     font-family: $font-family-base;
-    font-size: 16px;
+    font-size: $font-size-base;
     font-weight: $font-weight-medium;
-    line-height: 24px;
+    line-height: $line-height-base;
     letter-spacing: 0;
-    color: #334155;
+    color: $color-text-primary;
   }
 
   &__archive {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
-    height: 38.5px;
-    padding: 0 16px;
+    gap: $button-gap;
+    height: $button-height;
+    padding: 0 $button-padding-h;
     flex-shrink: 0;
-    border: 1px solid #e2e8f0;
+    border: 1px solid $color-border;
     border-radius: $radius-md;
     background-color: transparent;
     font-family: $font-family-base;
-    font-size: 14px;
+    font-size: $font-size-sm;
     font-weight: $font-weight-medium;
     line-height: 100%;
     letter-spacing: 0;
-    color: #64748b;
+    color: $color-text-secondary;
     cursor: pointer;
     @include transition(background-color, border-color);
 
     &:hover {
       background-color: $color-bg-tertiary;
-      border-color: #cbd5e1;
+      border-color: $color-border-hover;
     }
   }
 
   &__archive-icon {
-    width: 16px;
-    height: 16px;
+    width: $icon-size-md;
+    height: $icon-size-md;
   }
 }
 </style>

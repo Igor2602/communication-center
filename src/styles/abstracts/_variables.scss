@@ -2,23 +2,43 @@
 // Variables
 // ==============================================
 
-// Colors
-$color-primary: #3b82f6;
-$color-primary-dark: #2563eb;
+// Colors - Base
+$color-primary: #0768ac;
+$color-primary-hover: #065a96;
 $color-secondary: #64748b;
 $color-success: #22c55e;
 $color-warning: #f59e0b;
 $color-error: #ef4444;
 
-$color-text-primary: #1e293b;
+// Colors - Text
+$color-text-primary: #334155;
 $color-text-secondary: #64748b;
+$color-text-muted: #475569;
 $color-text-inverse: #ffffff;
 
+// Colors - Backgrounds
 $color-bg-primary: #ffffff;
 $color-bg-secondary: #f8fafc;
 $color-bg-tertiary: #f1f5f9;
+$color-bg-hover: #f3f7fb;
+$color-bg-dark: #1e293b;
 
+// Colors - Borders
 $color-border: #e2e8f0;
+$color-border-hover: #cbd5e1;
+
+// Colors - Badge
+$color-badge-bg: #0768ac;
+$color-badge-text: #ffffff;
+
+// Colors - Message
+$color-message-incoming-bg: #f3f7fb;
+$color-message-outgoing-bg: #1e293b;
+$color-message-text: #475569;
+
+// Colors - Warning banner
+$color-warning-text: #ca8a04;
+$color-warning-bg: #fefce8f2;
 
 // Typography
 $font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
@@ -48,6 +68,48 @@ $spacing-lg: 1.5rem;
 $spacing-xl: 2rem;
 $spacing-2xl: 3rem;
 
+// Layout
+$header-height: 80px;
+$sidebar-width: 321px;
+$sidebar-width-tablet: 300px;
+
+// Avatars
+$avatar-size-sm: 28px;
+$avatar-size-md: 42px;
+$avatar-gap: 8px;
+
+// Buttons
+$button-height: 38.5px;
+$button-padding-h: 16px;
+$button-gap: 7px;
+
+// Badge
+$badge-size: 21px;
+$badge-radius: 10.5px;
+$badge-font-size: 11px;
+
+// Message bubble
+$message-bubble-radius: 6px;
+$message-bubble-indent: calc(#{$avatar-size-sm} + #{$avatar-gap});
+$message-max-width: 65%;
+$message-shadow: 0 4px 8px 0 rgba(4, 5, 6, 0.04);
+
+// Attachments
+$attachment-image-max-width: 240px;
+$attachment-image-max-height: 180px;
+
+// Search input
+$search-input-height: 33px;
+
+// Textarea
+$textarea-min-height: 40px;
+$textarea-max-height: 120px;
+
+// Icons
+$icon-size-sm: 14px;
+$icon-size-md: 16px;
+$icon-size-lg: 20px;
+
 // Border radius
 $radius-sm: 0.25rem;
 $radius-md: 0.5rem;
@@ -60,14 +122,16 @@ $shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 $shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 
+// Scrollbar
+$scrollbar-width: 8px;
+$scrollbar-radius: 100px;
+$scrollbar-track-bg: #e8e8e8;
+$scrollbar-thumb-bg: #7a7a7a;
+
 // Transitions
 $transition-fast: 150ms ease;
 $transition-base: 250ms ease;
 $transition-slow: 350ms ease;
-
-// Layout
-$sidebar-width: 321px;
-$sidebar-width-tablet: 300px;
 
 // Z-index layers
 $z-dropdown: 100;

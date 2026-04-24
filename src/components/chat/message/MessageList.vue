@@ -108,17 +108,17 @@ watch(() => props.isTyping, () => scrollToBottom(), { flush: 'post' })
 
   &__banner {
     align-self: center;
-    padding: 7px 10.5px;
+    padding: $spacing-sm $spacing-md;
     margin-bottom: $spacing-md;
-    gap: 7px;
+    gap: $button-gap;
     font-family: $font-family-base;
-    font-size: 14px;
+    font-size: $font-size-sm;
     font-weight: $font-weight-medium;
     line-height: 100%;
     letter-spacing: 0;
-    color: #ca8a04;
-    background-color: #fefce8f2;
-    box-shadow: 0 4px 8px 0 rgba(9, 7, 0, 0.04);
+    color: $color-warning-text;
+    background-color: $color-warning-bg;
+    box-shadow: $message-shadow;
     border-radius: $radius-md;
     white-space: nowrap;
   }

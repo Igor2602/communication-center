@@ -152,7 +152,7 @@ watch(() => chatStore.selectedConversationId, () => scrollToActiveItem())
     @include transition(color);
 
     &:hover {
-      color: $color-primary-dark;
+      color: $color-primary-hover;
     }
   }
 

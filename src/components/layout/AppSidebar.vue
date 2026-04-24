@@ -80,9 +80,9 @@ async function handleContactSelect(contact: User) {
 
   &__header {
     @include flex-between;
-    height: 80px;
-    padding: 16px;
-    border-bottom: 1px solid #e2e8f0;
+    height: $header-height;
+    padding: $spacing-md;
+    border-bottom: 1px solid $color-border;
   }
 
   &__header-text {
@@ -91,27 +91,27 @@ async function handleContactSelect(contact: User) {
 
   &__title {
     font-family: $font-family-base;
-    font-size: 18px;
+    font-size: $font-size-lg;
     font-weight: $font-weight-medium;
-    line-height: 26px;
+    line-height: $line-height-relaxed;
     letter-spacing: 0;
-    color: #334155;
+    color: $color-text-primary;
   }
 
   &__subtitle {
     font-family: $font-family-base;
-    font-size: 14px;
+    font-size: $font-size-sm;
     font-weight: $font-weight-regular;
-    line-height: 22px;
+    line-height: $line-height-relaxed;
     letter-spacing: 0;
-    color: #64748b;
+    color: $color-text-secondary;
     margin-top: 2px;
   }
 
   &__new-chat {
     @include flex-center;
     flex-shrink: 0;
-    background-color: #ffffff;
+    background-color: $color-bg-primary;
     border: none;
     cursor: pointer;
     @include transition(opacity);
@@ -122,8 +122,8 @@ async function handleContactSelect(contact: User) {
   }
 
   &__new-chat-icon {
-    width: 20px;
-    height: 21px;
+    width: $icon-size-lg;
+    height: $icon-size-lg;
   }
 }
 </style>

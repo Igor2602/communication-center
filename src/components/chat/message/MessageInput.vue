@@ -267,8 +267,8 @@ function handleSend() {
   &__textarea {
     flex: 1;
     resize: none;
-    min-height: 40px;
-    max-height: 120px;
+    min-height: $textarea-min-height;
+    max-height: $textarea-max-height;
     padding: $spacing-sm $spacing-md;
     border: 1px solid $color-border;
     border-radius: $radius-md;
@@ -310,10 +310,10 @@ function handleSend() {
 
   &__attach {
     @include flex-center;
-    width: 40px;
-    height: 40px;
+    width: $textarea-min-height;
+    height: $textarea-min-height;
     flex-shrink: 0;
-    color: #0768ac;
+    color: $color-primary;
     @include transition(color);
 
     &:hover {
@@ -370,24 +370,24 @@ function handleSend() {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
-    height: 38.5px;
-    padding: 0 16px;
+    gap: $button-gap;
+    height: $button-height;
+    padding: 0 $button-padding-h;
     flex-shrink: 0;
-    background-color: #0768ac;
-    border: 1px solid #0768ac;
+    background-color: $color-primary;
+    border: 1px solid $color-primary;
     border-radius: $radius-md;
     font-family: $font-family-base;
-    font-size: 14px;
+    font-size: $font-size-sm;
     font-weight: $font-weight-medium;
     line-height: 100%;
     letter-spacing: 0;
-    color: #ffffff;
+    color: $color-text-inverse;
     cursor: pointer;
     @include transition(background-color);
 
     &:hover:not(:disabled) {
-      background-color: #065a96;
+      background-color: $color-primary-hover;
     }
 
     &:disabled {
@@ -397,8 +397,8 @@ function handleSend() {
   }
 
   &__send-icon {
-    width: 16px;
-    height: 16px;
+    width: $icon-size-md;
+    height: $icon-size-md;
   }
 
   &__footer {
@@ -408,11 +408,11 @@ function handleSend() {
 
   &__counter {
     font-family: $font-family-base;
-    font-size: 12px;
+    font-size: $font-size-xs;
     font-weight: $font-weight-regular;
-    line-height: 21px;
+    line-height: $line-height-relaxed;
     letter-spacing: 0;
-    color: #334155;
+    color: $color-text-primary;
 
     &--over {
       color: $color-error;
@@ -422,7 +422,7 @@ function handleSend() {
 
   &__separator {
     margin: 0 $spacing-xs;
-    color: #334155;
+    color: $color-text-primary;
   }
 }
 

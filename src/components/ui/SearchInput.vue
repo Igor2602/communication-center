@@ -27,16 +27,16 @@ const modelValue = defineModel<string>({ default: '' })
   position: relative;
   display: flex;
   align-items: center;
-  gap: 7px;
-  height: 33px;
+  gap: $button-gap;
+  height: $search-input-height;
   border: 1px solid $color-border;
   border-radius: $radius-md;
-  background-color: #f3f7fb;
+  background-color: $color-bg-hover;
   padding: 0 $spacing-md;
 
   &__icon {
-    font-size: 14px;
-    color: #475569;
+    font-size: $icon-size-sm;
+    color: $color-text-muted;
     flex-shrink: 0;
   }
 
@@ -46,7 +46,7 @@ const modelValue = defineModel<string>({ default: '' })
     outline: none;
     background: transparent;
     font-family: $font-family-base;
-    font-size: 14px;
+    font-size: $font-size-sm;
     font-weight: $font-weight-medium;
     line-height: 100%;
     letter-spacing: 0;
@@ -54,7 +54,7 @@ const modelValue = defineModel<string>({ default: '' })
     padding: 0;
 
     &::placeholder {
-      color: #475569;
+      color: $color-text-muted;
     }
   }
 }

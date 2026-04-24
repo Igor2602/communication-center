@@ -36,39 +36,39 @@ defineProps<TypingIndicatorProps>()
   &__header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: $avatar-gap;
     margin-bottom: $spacing-xs;
   }
 
   &__avatar {
-    width: 28px !important;
-    height: 28px !important;
+    width: $avatar-size-sm !important;
+    height: $avatar-size-sm !important;
     flex-shrink: 0;
   }
 
   &__name {
     font-family: $font-family-base;
-    font-size: 16px;
+    font-size: $font-size-base;
     font-weight: $font-weight-medium;
-    line-height: 24px;
+    line-height: $line-height-base;
     letter-spacing: 0;
-    color: #334155;
+    color: $color-text-primary;
   }
 
   &__bubble {
     padding: $spacing-sm $spacing-md;
-    background-color: #f3f7fb;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px 0 rgba(4, 5, 6, 0.04);
-    margin-left: calc(28px + 8px);
+    background-color: $color-message-incoming-bg;
+    border: 1px solid $color-border;
+    border-radius: $message-bubble-radius;
+    box-shadow: $message-shadow;
+    margin-left: $message-bubble-indent;
   }
 
   &__text {
     font-family: $font-family-base;
-    font-size: 14px;
+    font-size: $font-size-sm;
     font-weight: $font-weight-medium;
-    color: #475569;
+    color: $color-message-text;
   }
 }
 </style>

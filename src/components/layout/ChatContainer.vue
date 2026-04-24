@@ -28,14 +28,14 @@
   @include flex-column;
   flex: 1;
   height: 100%;
-  background-color: #ffffff;
+  background-color: $color-bg-primary;
 
   &__header {
     @include flex-between;
-    height: 80px;
-    padding: 16px;
-    border-bottom: 1px solid #e2e8f0;
-    background-color: #ffffff;
+    height: $header-height;
+    padding: $spacing-md;
+    border-bottom: 1px solid $color-border;
+    background-color: $color-bg-primary;
   }
 
   &__messages {
@@ -44,10 +44,10 @@
   }
 
   &__composer {
-    padding: 16px 16px 24px;
+    padding: $spacing-md $spacing-md $spacing-lg;
     gap: 10px;
-    border-top: 1px solid #e2e8f0;
-    background-color: #ffffff;
+    border-top: 1px solid $color-border;
+    background-color: $color-bg-primary;
   }
 }
 </style>
