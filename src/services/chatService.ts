@@ -16,6 +16,11 @@ export const chatService = {
     return delay([...active])
   },
 
+  getArchivedConversations(): Promise<Conversation[]> {
+    const archived = mockConversations.filter((c) => c.isArchived)
+    return delay([...archived])
+  },
+
   getMessages(conversationId: string): Promise<Message[]> {
     const messages = mockMessages[conversationId] ?? []
     return delay([...messages])
@@ -49,6 +54,14 @@ export const chatService = {
     const conversation = mockConversations.find((c) => c.id === conversationId)
     if (conversation) {
       conversation.isArchived = true
+    }
+    return delay(undefined)
+  },
+
+  unarchiveConversation(conversationId: string): Promise<void> {
+    const conversation = mockConversations.find((c) => c.id === conversationId)
+    if (conversation) {
+      conversation.isArchived = false
     }
     return delay(undefined)
   },

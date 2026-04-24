@@ -32,4 +32,14 @@ export const mockUsers: User[] = [
     name: 'Emily Ferreira',
     avatar: 'https://i.pravatar.cc/150?u=user-5',
   },
+  {
+    id: 'user-6',
+    name: 'Fernando Alves',
+    avatar: 'https://i.pravatar.cc/150?u=user-6',
+  },
+  {
+    id: 'user-7',
+    name: 'Gabriela Costa',
+    avatar: 'https://i.pravatar.cc/150?u=user-7',
+  },
 ]

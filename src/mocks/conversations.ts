@@ -47,4 +47,22 @@ export const mockConversations: Conversation[] = [
     isTyping: false,
     isArchived: false,
   },
+  {
+    id: 'conv-6',
+    participant: mockUsers[5],
+    lastMessage: 'Fechado, depois a gente alinha os detalhes',
+    lastMessageAt: '2026-04-20T16:10:00Z',
+    unreadCount: 0,
+    isTyping: false,
+    isArchived: true,
+  },
+  {
+    id: 'conv-7',
+    participant: mockUsers[6],
+    lastMessage: 'Obrigada pela ajuda com o bug!',
+    lastMessageAt: '2026-04-19T10:45:00Z',
+    unreadCount: 0,
+    isTyping: false,
+    isArchived: true,
+  },
 ]

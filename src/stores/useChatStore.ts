@@ -6,16 +6,23 @@ import { chatService } from '@/services/chatService'
 export const useChatStore = defineStore('chat', () => {
   // State
   const conversations = ref<Conversation[]>([])
+  const archivedConversations = ref<Conversation[]>([])
   const selectedConversationId = ref<string | null>(null)
   const messagesByConversation = ref<Record<string, Message[]>>({})
   const isLoadingConversations = ref(false)
   const isLoadingMessages = ref(false)
   const isSendingMessage = ref(false)
+  const isViewingArchived = ref(false)
 
   // Getters
-  const selectedConversation = computed(() =>
-    conversations.value.find((c) => c.id === selectedConversationId.value) ?? null,
+  const displayedConversations = computed(() =>
+    isViewingArchived.value ? archivedConversations.value : conversations.value,
   )
+
+  const selectedConversation = computed(() => {
+    const allConversations = [...conversations.value, ...archivedConversations.value]
+    return allConversations.find((c) => c.id === selectedConversationId.value) ?? null
+  })
 
   const selectedMessages = computed(() => {
     if (!selectedConversationId.value) return []
@@ -24,21 +31,32 @@ export const useChatStore = defineStore('chat', () => {
 
   const isSelectedTyping = computed(() => selectedConversation.value?.isTyping ?? false)
 
+  const isSelectedArchived = computed(() => selectedConversation.value?.isArchived ?? false)
+
+  const archivedCount = computed(() => archivedConversations.value.length)
+
   // Actions
   async function fetchConversations() {
     isLoadingConversations.value = true
     try {
       conversations.value = await chatService.getConversations()
+      archivedConversations.value = await chatService.getArchivedConversations()
     } finally {
       isLoadingConversations.value = false
     }
   }
 
+  function setViewingArchived(value: boolean) {
+    isViewingArchived.value = value
+    selectedConversationId.value = null
+  }
+
   async function selectConversation(conversationId: string) {
     selectedConversationId.value = conversationId
 
-    const conversation = conversations.value.find((c) => c.id === conversationId)
-    if (conversation) {
+    const conversation = [...conversations.value, ...archivedConversations.value]
+      .find((c) => c.id === conversationId)
+    if (conversation && !conversation.isArchived) {
       conversation.unreadCount = 0
     }
 
@@ -111,7 +129,28 @@ export const useChatStore = defineStore('chat', () => {
 
   async function archiveConversation(conversationId: string) {
     await chatService.archiveConversation(conversationId)
-    conversations.value = conversations.value.filter((c) => c.id !== conversationId)
+
+    const conversation = conversations.value.find((c) => c.id === conversationId)
+    if (conversation) {
+      conversation.isArchived = true
+      conversations.value = conversations.value.filter((c) => c.id !== conversationId)
+      archivedConversations.value.push(conversation)
+    }
+
+    if (selectedConversationId.value === conversationId) {
+      selectedConversationId.value = null
+    }
+  }
+
+  async function unarchiveConversation(conversationId: string) {
+    await chatService.unarchiveConversation(conversationId)
+
+    const conversation = archivedConversations.value.find((c) => c.id === conversationId)
+    if (conversation) {
+      conversation.isArchived = false
+      archivedConversations.value = archivedConversations.value.filter((c) => c.id !== conversationId)
+      conversations.value.push(conversation)
+    }
 
     if (selectedConversationId.value === conversationId) {
       selectedConversationId.value = null
@@ -121,24 +160,31 @@ export const useChatStore = defineStore('chat', () => {
   return {
     // State
     conversations,
+    archivedConversations,
     selectedConversationId,
     messagesByConversation,
     isLoadingConversations,
     isLoadingMessages,
     isSendingMessage,
+    isViewingArchived,
 
     // Getters
+    displayedConversations,
     selectedConversation,
     selectedMessages,
     isSelectedTyping,
+    isSelectedArchived,
+    archivedCount,
 
     // Actions
     fetchConversations,
+    setViewingArchived,
     selectConversation,
     fetchMessages,
     sendMessage,
     setTyping,
     simulateIncomingTyping,
     archiveConversation,
+    unarchiveConversation,
   }
 })

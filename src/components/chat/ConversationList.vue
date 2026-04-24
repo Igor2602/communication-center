@@ -9,9 +9,9 @@ const searchQuery = ref('')
 
 const filteredConversations = computed(() => {
   const query = searchQuery.value.toLowerCase().trim()
-  if (!query) return chatStore.conversations
+  if (!query) return chatStore.displayedConversations
 
-  return chatStore.conversations.filter((conversation) =>
+  return chatStore.displayedConversations.filter((conversation) =>
     conversation.participant.name.toLowerCase().includes(query),
   )
 })
@@ -19,10 +19,32 @@ const filteredConversations = computed(() => {
 function handleSelect(conversationId: string) {
   chatStore.selectConversation(conversationId)
 }
+
+function showArchived() {
+  searchQuery.value = ''
+  chatStore.setViewingArchived(true)
+}
+
+function showActive() {
+  searchQuery.value = ''
+  chatStore.setViewingArchived(false)
+}
 </script>
 
 <template>
   <div class="conversation-list">
+    <div v-if="chatStore.isViewingArchived" class="conversation-list__archived-header">
+      <button
+        type="button"
+        class="conversation-list__back"
+        aria-label="Voltar para conversas"
+        @click="showActive"
+      >
+        <i class="pi pi-arrow-left" />
+        <span>Conversas arquivadas</span>
+      </button>
+    </div>
+
     <div class="conversation-list__search">
       <input
         v-model="searchQuery"
@@ -36,7 +58,7 @@ function handleSelect(conversationId: string) {
     <div
       class="conversation-list__items"
       role="listbox"
-      aria-label="Conversations"
+      :aria-label="chatStore.isViewingArchived ? 'Conversas arquivadas' : 'Conversas'"
     >
       <ConversationItem
         v-for="conversation in filteredConversations"
@@ -52,7 +74,25 @@ function handleSelect(conversationId: string) {
       >
         Nenhuma conversa encontrada
       </p>
+
+      <p
+        v-if="filteredConversations.length === 0 && !searchQuery && chatStore.isViewingArchived"
+        class="conversation-list__no-results"
+      >
+        Nenhuma conversa arquivada
+      </p>
     </div>
+
+    <button
+      v-if="!chatStore.isViewingArchived && chatStore.archivedCount > 0"
+      type="button"
+      class="conversation-list__archived-link"
+      @click="showArchived"
+    >
+      <i class="pi pi-inbox" />
+      <span>Conversas arquivadas</span>
+      <span class="conversation-list__archived-count">{{ chatStore.archivedCount }}</span>
+    </button>
   </div>
 </template>
 
@@ -61,8 +101,27 @@ function handleSelect(conversationId: string) {
   @include flex-column;
   height: 100%;
 
+  &__archived-header {
+    padding: $spacing-sm $spacing-lg;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__back {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-primary;
+    @include transition(color);
+
+    &:hover {
+      color: $color-primary-dark;
+    }
+  }
+
   &__search {
-    padding: 0 $spacing-lg $spacing-md;
+    padding: $spacing-md $spacing-lg;
   }
 
   &__search-input {
@@ -96,6 +155,38 @@ function handleSelect(conversationId: string) {
     text-align: center;
     color: $color-text-secondary;
     font-size: $font-size-sm;
+  }
+
+  &__archived-link {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    width: 100%;
+    padding: $spacing-md $spacing-lg;
+    border-top: 1px solid $color-border;
+    font-size: $font-size-sm;
+    color: $color-primary;
+    @include transition(background-color);
+
+    &:hover {
+      background-color: $color-bg-tertiary;
+    }
+
+    i {
+      font-size: $font-size-base;
+    }
+  }
+
+  &__archived-count {
+    margin-left: auto;
+    padding: 1px $spacing-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-inverse;
+    background-color: $color-secondary;
+    border-radius: $radius-full;
+    min-width: 20px;
+    text-align: center;
   }
 }
 </style>

@@ -3,13 +3,22 @@ import type { Conversation } from '@/types/chat'
 import Avatar from 'primevue/avatar'
 import Button from 'primevue/button'
 
-defineProps<{
+const props = defineProps<{
   conversation: Conversation
 }>()
 
 const emit = defineEmits<{
   archive: [conversationId: string]
+  unarchive: [conversationId: string]
 }>()
+
+function handleToggleArchive() {
+  if (props.conversation.isArchived) {
+    emit('unarchive', props.conversation.id)
+  } else {
+    emit('archive', props.conversation.id)
+  }
+}
 </script>
 
 <template>
@@ -25,13 +34,13 @@ const emit = defineEmits<{
     </div>
 
     <Button
-      icon="pi pi-inbox"
+      :icon="conversation.isArchived ? 'pi pi-replay' : 'pi pi-inbox'"
+      :label="conversation.isArchived ? 'Desarquivar' : 'Arquivar'"
       severity="secondary"
       text
-      rounded
-      aria-label="Arquivar conversa"
+      :aria-label="conversation.isArchived ? 'Desarquivar conversa' : 'Arquivar conversa'"
       class="chat-header__archive"
-      @click="emit('archive', conversation.id)"
+      @click="handleToggleArchive"
     />
   </div>
 </template>

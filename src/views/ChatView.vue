@@ -17,6 +17,10 @@ onMounted(() => {
 function handleArchive(conversationId: string) {
   chatStore.archiveConversation(conversationId)
 }
+
+function handleUnarchive(conversationId: string) {
+  chatStore.unarchiveConversation(conversationId)
+}
 </script>
 
 <template>
@@ -27,6 +31,7 @@ function handleArchive(conversationId: string) {
         <ChatHeader
           :conversation="chatStore.selectedConversation"
           @archive="handleArchive"
+          @unarchive="handleUnarchive"
         />
       </template>
       <template v-if="chatStore.selectedConversation" #messages>

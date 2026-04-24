@@ -131,4 +131,48 @@ export const mockMessages: Record<string, Message[]> = {
       isOutgoing: false,
     },
   ],
+  'conv-6': [
+    {
+      id: 'msg-6-1',
+      conversationId: 'conv-6',
+      senderId: 'user-6',
+      content: 'Fala, tudo certo pra sexta?',
+      timestamp: '2026-04-20T15:50:00Z',
+      isOutgoing: false,
+    },
+    {
+      id: 'msg-6-2',
+      conversationId: 'conv-6',
+      senderId: 'user-me',
+      content: 'Tudo certo, confirmo até quinta',
+      timestamp: '2026-04-20T16:00:00Z',
+      isOutgoing: true,
+    },
+    {
+      id: 'msg-6-3',
+      conversationId: 'conv-6',
+      senderId: 'user-6',
+      content: 'Fechado, depois a gente alinha os detalhes',
+      timestamp: '2026-04-20T16:10:00Z',
+      isOutgoing: false,
+    },
+  ],
+  'conv-7': [
+    {
+      id: 'msg-7-1',
+      conversationId: 'conv-7',
+      senderId: 'user-me',
+      content: 'Gabi, achei o problema — era uma race condition no useEffect',
+      timestamp: '2026-04-19T10:30:00Z',
+      isOutgoing: true,
+    },
+    {
+      id: 'msg-7-2',
+      conversationId: 'conv-7',
+      senderId: 'user-7',
+      content: 'Obrigada pela ajuda com o bug!',
+      timestamp: '2026-04-19T10:45:00Z',
+      isOutgoing: false,
+    },
+  ],
 }
