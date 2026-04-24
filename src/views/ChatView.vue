@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type { Attachment } from '@/types/chat'
 import AppSidebar from '@/components/layout/AppSidebar.vue'
 import ChatContainer from '@/components/layout/ChatContainer.vue'
@@ -10,10 +10,13 @@ import MessageListSkeleton from '@/components/chat/MessageListSkeleton.vue'
 import AttachmentPreview from '@/components/chat/AttachmentPreview.vue'
 import BaseEmptyState from '@/components/ui/BaseEmptyState.vue'
 import { useChatStore } from '@/stores/useChatStore'
+import { useResponsive } from '@/composables/useResponsive'
 import { currentUser } from '@/mocks/users'
 
 const chatStore = useChatStore()
+const { isMobile } = useResponsive()
 
+const showChat = ref(false)
 const previewVisible = ref(false)
 const previewAttachment = ref<Attachment | null>(null)
 
@@ -21,12 +24,33 @@ onMounted(() => {
   chatStore.fetchConversations()
 })
 
+// On mobile, open chat panel when a conversation is selected
+watch(
+  () => chatStore.selectedConversationId,
+  (id) => {
+    if (id && isMobile.value) {
+      showChat.value = true
+    }
+  },
+)
+
+function handleBack() {
+  showChat.value = false
+  chatStore.selectedConversationId = null
+}
+
 function handleArchive(conversationId: string) {
   chatStore.archiveConversation(conversationId)
+  if (isMobile.value) {
+    showChat.value = false
+  }
 }
 
 function handleUnarchive(conversationId: string) {
   chatStore.unarchiveConversation(conversationId)
+  if (isMobile.value) {
+    showChat.value = false
+  }
 }
 
 function handlePreviewAttachment(attachment: Attachment) {
@@ -37,13 +61,21 @@ function handlePreviewAttachment(attachment: Attachment) {
 
 <template>
   <div class="chat-view">
-    <AppSidebar />
-    <ChatContainer>
+    <AppSidebar
+      v-show="!isMobile || !showChat"
+      :class="{ 'chat-view__sidebar--mobile': isMobile }"
+    />
+    <ChatContainer
+      v-show="!isMobile || showChat"
+      :class="{ 'chat-view__main--mobile': isMobile }"
+    >
       <template v-if="chatStore.selectedConversation" #header>
         <ChatHeader
           :conversation="chatStore.selectedConversation"
+          :show-back="isMobile"
           @archive="handleArchive"
           @unarchive="handleUnarchive"
+          @back="handleBack"
         />
       </template>
 
@@ -82,5 +114,15 @@ function handlePreviewAttachment(attachment: Attachment) {
   display: flex;
   height: 100vh;
   overflow: hidden;
+
+  &__sidebar--mobile {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  &__main--mobile {
+    width: 100%;
+    flex-shrink: 0;
+  }
 }
 </style>

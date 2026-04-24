@@ -89,6 +89,14 @@ function scrollToBottom() {
   })
 }
 
+// Scroll to bottom on initial load and when conversation changes
+watch(
+  () => props.messages,
+  () => scrollToBottom(),
+  { flush: 'post' },
+)
+
+// Scroll to bottom when new messages arrive or typing state changes
 watch(
   () => [props.messages.length, props.isTyping],
   () => scrollToBottom(),

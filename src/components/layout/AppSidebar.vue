@@ -58,6 +58,15 @@ async function handleContactSelect(contact: User) {
   border-right: 1px solid $color-border;
   background-color: $color-bg-primary;
 
+  @include media-between($breakpoint-md, $breakpoint-lg) {
+    width: $sidebar-width-tablet;
+  }
+
+  @include media-down($breakpoint-md) {
+    width: 100%;
+    border-right: none;
+  }
+
   &__header {
     @include flex-between;
     padding: $spacing-lg $spacing-lg $spacing-md;

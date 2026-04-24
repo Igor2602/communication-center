@@ -3,13 +3,17 @@ import type { Conversation } from '@/types/chat'
 import Avatar from 'primevue/avatar'
 import Button from 'primevue/button'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   conversation: Conversation
-}>()
+  showBack?: boolean
+}>(), {
+  showBack: false,
+})
 
 const emit = defineEmits<{
   archive: [conversationId: string]
   unarchive: [conversationId: string]
+  back: []
 }>()
 
 function handleToggleArchive() {
@@ -24,6 +28,15 @@ function handleToggleArchive() {
 <template>
   <div class="chat-header">
     <div class="chat-header__info">
+      <button
+        v-if="showBack"
+        type="button"
+        class="chat-header__back"
+        aria-label="Voltar para conversas"
+        @click="emit('back')"
+      >
+        <i class="pi pi-arrow-left" />
+      </button>
       <Avatar
         :image="conversation.participant.avatar"
         :alt="conversation.participant.name"
@@ -54,6 +67,23 @@ function handleToggleArchive() {
     display: flex;
     align-items: center;
     gap: $spacing-md;
+  }
+
+  &__back {
+    @include flex-center;
+    width: 32px;
+    height: 32px;
+    color: $color-text-secondary;
+    flex-shrink: 0;
+    @include transition(color);
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    i {
+      font-size: $font-size-base;
+    }
   }
 
   &__name {
