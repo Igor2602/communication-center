@@ -19,9 +19,10 @@ export const useChatStore = defineStore('chat', () => {
   const isViewingArchived = ref(false)
 
   // Getters
-  const displayedConversations = computed(() =>
-    isViewingArchived.value ? archivedConversations.value : conversations.value,
-  )
+  const displayedConversations = computed(() => {
+    const list = isViewingArchived.value ? archivedConversations.value : conversations.value
+    return [...list].sort((a, b) => b.lastMessageAt.localeCompare(a.lastMessageAt))
+  })
 
   const selectedConversation = computed(() => {
     const allConversations = [...conversations.value, ...archivedConversations.value]
@@ -50,6 +51,17 @@ export const useChatStore = defineStore('chat', () => {
 
   async function fetchContacts() {
     contacts.value = await chatService.getContacts()
+  }
+
+  function insertSorted(list: Conversation[], conversation: Conversation) {
+    const index = list.findIndex(
+      (c) => c.lastMessageAt < conversation.lastMessageAt,
+    )
+    if (index === -1) {
+      list.push(conversation)
+    } else {
+      list.splice(index, 0, conversation)
+    }
   }
 
   function clearSelection() {
@@ -189,7 +201,7 @@ export const useChatStore = defineStore('chat', () => {
     if (conversation) {
       conversation.isArchived = true
       conversations.value = conversations.value.filter((c) => c.id !== conversationId)
-      archivedConversations.value.push(conversation)
+      insertSorted(archivedConversations.value, conversation)
     }
 
     isViewingArchived.value = true
@@ -204,7 +216,7 @@ export const useChatStore = defineStore('chat', () => {
     if (conversation) {
       conversation.isArchived = false
       archivedConversations.value = archivedConversations.value.filter((c) => c.id !== conversationId)
-      conversations.value.push(conversation)
+      insertSorted(conversations.value, conversation)
     }
 
     isViewingArchived.value = false
