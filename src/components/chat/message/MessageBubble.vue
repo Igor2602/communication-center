@@ -142,7 +142,7 @@ $indent: calc(#{$avatar-size} + #{$avatar-gap});
     padding: $spacing-sm $spacing-md;
     background-color: #f3f7fb;
     border: 1px solid #e2e8f0;
-    border-radius: $radius-lg;
+    border-radius: 6px;
     box-shadow: 0 4px 8px 0 rgba(4, 5, 6, 0.04);
     max-width: 65%;
     margin-left: $indent;

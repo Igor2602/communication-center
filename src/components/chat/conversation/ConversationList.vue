@@ -148,11 +148,8 @@ function showActive() {
     padding: 0;
     font-size: $font-size-sm;
     color: $color-text-secondary;
-    @include transition(background-color);
-
-    &:hover {
-      color: $color-primary;
-    }
+    background-color: transparent;
+    cursor: pointer;
   }
 
   &__archived-icon {

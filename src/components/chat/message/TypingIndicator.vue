@@ -10,57 +10,65 @@ defineProps<TypingIndicatorProps>()
     class="typing-indicator"
     aria-live="polite"
   >
-    <Avatar
-      :image="avatar"
-      :alt="name"
-      shape="circle"
-      class="typing-indicator__avatar"
-    />
-
-    <div class="typing-indicator__wrapper">
+    <div class="typing-indicator__header">
+      <Avatar
+        :image="avatar"
+        :alt="name"
+        shape="circle"
+        class="typing-indicator__avatar"
+      />
       <span class="typing-indicator__name">{{ name }}</span>
-      <div class="typing-indicator__bubble">
-        <em class="typing-indicator__text">Digitando...</em>
-      </div>
+    </div>
+
+    <div class="typing-indicator__bubble">
+      <em class="typing-indicator__text">Digitando...</em>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-$color-bubble-incoming: #fdf6e3;
-
 .typing-indicator {
-  display: flex;
+  @include flex-column;
   align-items: flex-start;
-  gap: $spacing-sm;
   margin-bottom: $spacing-lg;
   animation: typing-fade-in 200ms ease both;
 
-  &__avatar {
-    flex-shrink: 0;
-    margin-top: $spacing-xs;
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: $spacing-xs;
   }
 
-  &__wrapper {
-    @include flex-column;
-    gap: $spacing-xs;
+  &__avatar {
+    width: 28px !important;
+    height: 28px !important;
+    flex-shrink: 0;
   }
 
   &__name {
-    font-size: $font-size-sm;
-    font-weight: $font-weight-semibold;
-    color: $color-text-primary;
+    font-family: $font-family-base;
+    font-size: 16px;
+    font-weight: $font-weight-medium;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #334155;
   }
 
   &__bubble {
     padding: $spacing-sm $spacing-md;
-    background-color: $color-bubble-incoming;
-    border-radius: $radius-lg $radius-lg $radius-lg $radius-sm;
+    background-color: #f3f7fb;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px 0 rgba(4, 5, 6, 0.04);
+    margin-left: calc(28px + 8px);
   }
 
   &__text {
-    font-size: $font-size-sm;
-    color: $color-text-secondary;
+    font-family: $font-family-base;
+    font-size: 14px;
+    font-weight: $font-weight-medium;
+    color: #475569;
   }
 }
 </style>

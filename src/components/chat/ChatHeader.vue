@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ChatHeaderProps, ChatHeaderEmits } from './types'
 import Avatar from 'primevue/avatar'
-import Button from 'primevue/button'
+import iconArchive from '@/assets/icons/icon-archive.svg'
 
 const props = withDefaults(defineProps<ChatHeaderProps>(), {
   showBack: false,
@@ -39,15 +39,19 @@ function handleToggleArchive() {
       <span class="chat-header__name">{{ conversation.participant.name }}</span>
     </div>
 
-    <Button
-      :icon="conversation.isArchived ? 'pi pi-replay' : 'pi pi-inbox'"
-      :label="conversation.isArchived ? 'Desarquivar' : 'Arquivar'"
-      severity="secondary"
-      outlined
-      :aria-label="conversation.isArchived ? 'Desarquivar' : 'Arquivar'"
+    <button
+      type="button"
       class="chat-header__archive"
+      :aria-label="conversation.isArchived ? 'Desarquivar' : 'Arquivar'"
       @click="handleToggleArchive"
-    />
+    >
+      <img
+        :src="iconArchive"
+        alt=""
+        class="chat-header__archive-icon"
+      >
+      <span>{{ conversation.isArchived ? 'Desarquivar' : 'Arquivar' }}</span>
+    </button>
   </div>
 </template>
 
@@ -79,14 +83,50 @@ function handleToggleArchive() {
     }
   }
 
+  &__avatar {
+    width: 42px !important;
+    height: 42px !important;
+    flex-shrink: 0;
+  }
+
   &__name {
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    color: $color-text-primary;
+    font-family: $font-family-base;
+    font-size: 16px;
+    font-weight: $font-weight-medium;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #334155;
   }
 
   &__archive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 38.5px;
+    padding: 0 16px;
     flex-shrink: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: $radius-md;
+    background-color: transparent;
+    font-family: $font-family-base;
+    font-size: 14px;
+    font-weight: $font-weight-medium;
+    line-height: 100%;
+    letter-spacing: 0;
+    color: #64748b;
+    cursor: pointer;
+    @include transition(background-color, border-color);
+
+    &:hover {
+      background-color: $color-bg-tertiary;
+      border-color: #cbd5e1;
+    }
+  }
+
+  &__archive-icon {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>

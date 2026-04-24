@@ -44,7 +44,11 @@ async function handleContactSelect(contact: User) {
         aria-label="Nova conversa"
         @click="openContactList"
       >
-        <i class="pi pi-plus" />
+        <img
+          src="@/assets/icons/icon-new-chat.svg"
+          alt=""
+          class="sidebar__new-chat-icon"
+        >
       </button>
     </header>
 
@@ -106,18 +110,20 @@ async function handleContactSelect(contact: User) {
 
   &__new-chat {
     @include flex-center;
-    width: 36px;
-    height: 36px;
-    border: 1px solid $color-border;
-    border-radius: $radius-md;
-    color: $color-primary;
     flex-shrink: 0;
-    @include transition(background-color, border-color);
+    background-color: #ffffff;
+    border: none;
+    cursor: pointer;
+    @include transition(opacity);
 
     &:hover {
-      background-color: $color-bg-tertiary;
-      border-color: $color-primary;
+      opacity: 0.7;
     }
+  }
+
+  &__new-chat-icon {
+    width: 20px;
+    height: 21px;
   }
 }
 </style>

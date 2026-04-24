@@ -6,10 +6,11 @@
     class="chat-container"
     aria-label="Chat"
   >
-    <header class="chat-container__header">
-      <slot name="header">
-        <span class="chat-container__header-placeholder">Selecione uma conversa</span>
-      </slot>
+    <header
+      v-if="$slots.header"
+      class="chat-container__header"
+    >
+      <slot name="header" />
     </header>
 
     <main class="chat-container__messages">
@@ -35,11 +36,6 @@
     padding: 16px;
     border-bottom: 1px solid #e2e8f0;
     background-color: #ffffff;
-  }
-
-  &__header-placeholder {
-    color: $color-text-secondary;
-    font-size: $font-size-sm;
   }
 
   &__messages {
