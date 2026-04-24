@@ -49,3 +49,22 @@
   transition-duration: 250ms;
   transition-timing-function: ease;
 }
+
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e8e8e8;
+    border-radius: 100px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #7a7a7a;
+    border-radius: 100px;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: #7a7a7a #e8e8e8;
+}

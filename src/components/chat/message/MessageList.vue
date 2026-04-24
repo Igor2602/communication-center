@@ -50,15 +50,14 @@ function getSenderAvatar(message: Message): string {
   return message.isOutgoing ? props.currentUserAvatar : props.participant.avatar
 }
 
-// Force scroll on conversation change
+// Force scroll on conversation change (instant)
 watch(() => props.messages, () => scrollToBottom(true), { flush: 'post' })
 
-// Respect user position on new messages / typing
-watch(
-  () => [props.messages.length, props.isTyping],
-  () => scrollToBottom(),
-  { flush: 'post' },
-)
+// Force scroll on new messages (smooth)
+watch(() => props.messages.length, () => scrollToBottom(true), { flush: 'post' })
+
+// Respect user position for typing indicator only
+watch(() => props.isTyping, () => scrollToBottom(), { flush: 'post' })
 </script>
 
 <template>
@@ -108,6 +107,7 @@ $color-banner-border: #ffeeba;
   height: 100%;
   overflow-y: auto;
   padding: $spacing-md $spacing-lg;
+  @include custom-scrollbar;
 
   &__banner {
     text-align: center;

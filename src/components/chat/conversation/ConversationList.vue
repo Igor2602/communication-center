@@ -160,6 +160,7 @@ function showActive() {
   &__items {
     flex: 1;
     overflow-y: auto;
+    @include custom-scrollbar;
   }
 
   &__no-results {
