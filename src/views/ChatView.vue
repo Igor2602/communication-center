@@ -113,6 +113,7 @@ function handlePreviewAttachment(attachment: Attachment) {
 .chat-view {
   display: flex;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 
   &__sidebar--mobile {
