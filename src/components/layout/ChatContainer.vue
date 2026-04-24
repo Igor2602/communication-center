@@ -41,8 +41,7 @@
 
   &__messages {
     flex: 1;
-    overflow-y: auto;
-    padding: $spacing-lg;
+    overflow: hidden;
   }
 
   &__composer {

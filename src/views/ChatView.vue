@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import AppSidebar from '@/components/layout/AppSidebar.vue'
 import ChatContainer from '@/components/layout/ChatContainer.vue'
 import ChatHeader from '@/components/chat/ChatHeader.vue'
+import MessageList from '@/components/chat/MessageList.vue'
 import { useChatStore } from '@/stores/useChatStore'
 
 const chatStore = useChatStore()
@@ -25,6 +26,9 @@ function handleArchive(conversationId: string) {
           :conversation="chatStore.selectedConversation"
           @archive="handleArchive"
         />
+      </template>
+      <template v-if="chatStore.selectedConversation" #messages>
+        <MessageList :messages="chatStore.selectedMessages" />
       </template>
     </ChatContainer>
   </div>
