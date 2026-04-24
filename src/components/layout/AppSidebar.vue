@@ -1,5 +1,26 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import type { User } from '@/types/chat'
 import ConversationList from '@/components/chat/ConversationList.vue'
+import ContactList from '@/components/chat/ContactList.vue'
+import { useChatStore } from '@/stores/useChatStore'
+
+const chatStore = useChatStore()
+
+const isSelectingContact = ref(false)
+
+function openContactList() {
+  isSelectingContact.value = true
+}
+
+function closeContactList() {
+  isSelectingContact.value = false
+}
+
+async function handleContactSelect(contact: User) {
+  isSelectingContact.value = false
+  await chatStore.startConversation(contact)
+}
 </script>
 
 <template>
@@ -10,15 +31,22 @@ import ConversationList from '@/components/chat/ConversationList.vue'
         <p class="sidebar__subtitle">Comunicação interna</p>
       </div>
       <button
+        v-if="!isSelectingContact"
         type="button"
         class="sidebar__new-chat"
         aria-label="Nova conversa"
+        @click="openContactList"
       >
         <i class="pi pi-plus" />
       </button>
     </header>
 
-    <ConversationList />
+    <ContactList
+      v-if="isSelectingContact"
+      @select="handleContactSelect"
+      @back="closeContactList"
+    />
+    <ConversationList v-else />
   </aside>
 </template>
 

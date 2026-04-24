@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Conversation, Message } from '@/types/chat'
+import type { Conversation, Message, User } from '@/types/chat'
 import { chatService } from '@/services/chatService'
 
 const TYPING_DELAY_MS = 1500
@@ -132,6 +132,36 @@ export const useChatStore = defineStore('chat', () => {
     }, TYPING_DELAY_MS)
   }
 
+  async function startConversation(contact: User) {
+    // Check active conversations
+    const existing = conversations.value.find(
+      (c) => c.participant.id === contact.id,
+    )
+    if (existing) {
+      isViewingArchived.value = false
+      await selectConversation(existing.id)
+      return
+    }
+
+    // Check archived conversations — unarchive if found
+    const archived = archivedConversations.value.find(
+      (c) => c.participant.id === contact.id,
+    )
+    if (archived) {
+      await unarchiveConversation(archived.id)
+      isViewingArchived.value = false
+      await selectConversation(archived.id)
+      return
+    }
+
+    // Create new conversation
+    const conversation = await chatService.createConversation(contact)
+    conversations.value.unshift(conversation)
+    messagesByConversation.value[conversation.id] = []
+    isViewingArchived.value = false
+    selectedConversationId.value = conversation.id
+  }
+
   function setTyping(conversationId: string, isTyping: boolean) {
     const conversation = conversations.value.find((c) => c.id === conversationId)
     if (conversation) {
@@ -195,6 +225,7 @@ export const useChatStore = defineStore('chat', () => {
     fetchMessages,
     sendMessage,
     setTyping,
+    startConversation,
     archiveConversation,
     unarchiveConversation,
   }

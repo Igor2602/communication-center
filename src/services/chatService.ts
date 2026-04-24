@@ -1,7 +1,7 @@
-import type { Conversation, Message, SendMessagePayload } from '@/types/chat'
+import type { Conversation, Message, SendMessagePayload, User } from '@/types/chat'
 import { mockConversations } from '@/mocks/conversations'
 import { mockMessages } from '@/mocks/messages'
-import { currentUser } from '@/mocks/users'
+import { currentUser, mockUsers } from '@/mocks/users'
 
 const SIMULATED_DELAY_MS = 400
 
@@ -95,6 +95,27 @@ export const chatService = {
     }
 
     return delay(reply)
+  },
+
+  getContacts(): Promise<User[]> {
+    return delay([...mockUsers])
+  },
+
+  createConversation(participant: User): Promise<Conversation> {
+    const conversation: Conversation = {
+      id: generateId(),
+      participant,
+      lastMessage: '',
+      lastMessageAt: new Date().toISOString(),
+      unreadCount: 0,
+      isTyping: false,
+      isArchived: false,
+    }
+
+    mockConversations.push(conversation)
+    mockMessages[conversation.id] = []
+
+    return delay(conversation)
   },
 
   archiveConversation(conversationId: string): Promise<void> {
