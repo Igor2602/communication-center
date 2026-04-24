@@ -98,26 +98,34 @@ watch(() => props.isTyping, () => scrollToBottom(), { flush: 'post' })
 </template>
 
 <style scoped lang="scss">
-$color-banner-bg: #fef3cd;
-$color-banner-text: #856404;
-$color-banner-border: #ffeeba;
-
 .message-list {
   @include flex-column;
+  align-items: center;
   height: 100%;
   overflow-y: auto;
   padding: $spacing-md $spacing-lg;
   @include custom-scrollbar;
 
   &__banner {
-    text-align: center;
-    padding: $spacing-sm $spacing-md;
+    align-self: center;
+    padding: 7px 10.5px;
     margin-bottom: $spacing-md;
-    font-size: $font-size-sm;
-    color: $color-banner-text;
-    background-color: $color-banner-bg;
-    border: 1px solid $color-banner-border;
+    gap: 7px;
+    font-family: $font-family-base;
+    font-size: 14px;
+    font-weight: $font-weight-medium;
+    line-height: 100%;
+    letter-spacing: 0;
+    color: #ca8a04;
+    background-color: #fefce8f2;
+    box-shadow: 0 4px 8px 0 rgba(9, 7, 0, 0.04);
     border-radius: $radius-md;
+    white-space: nowrap;
+  }
+
+  // Reset children to full width
+  & > *:not(.message-list__banner) {
+    align-self: stretch;
   }
 }
 </style>

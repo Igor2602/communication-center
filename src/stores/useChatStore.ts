@@ -68,8 +68,8 @@ export const useChatStore = defineStore('chat', () => {
       conversation.unreadCount = 0
     }
 
-    const cached = messagesByConversation.value[conversationId]
-    if (!cached) {
+    if (!messagesByConversation.value[conversationId]) {
+      isLoadingMessages.value = true
       await fetchMessages(conversationId)
     }
   }
@@ -183,6 +183,8 @@ export const useChatStore = defineStore('chat', () => {
       conversations.value = conversations.value.filter((c) => c.id !== conversationId)
       archivedConversations.value.push(conversation)
     }
+
+    isViewingArchived.value = true
   }
 
   async function unarchiveConversation(conversationId: string) {
@@ -196,6 +198,8 @@ export const useChatStore = defineStore('chat', () => {
       archivedConversations.value = archivedConversations.value.filter((c) => c.id !== conversationId)
       conversations.value.push(conversation)
     }
+
+    isViewingArchived.value = false
   }
 
   return {

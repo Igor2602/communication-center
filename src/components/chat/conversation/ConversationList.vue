@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { useChatStore } from '@/stores/useChatStore'
 import { useDebounce } from '@/composables/useDebounce'
 import SearchInput from '@/components/ui/SearchInput.vue'
@@ -34,6 +34,21 @@ function showActive() {
   searchQuery.value = ''
   chatStore.setViewingArchived(false)
 }
+
+const itemsRef = ref<HTMLElement | null>(null)
+
+function scrollToActiveItem() {
+  nextTick(() => {
+    if (!itemsRef.value) return
+    const activeEl = itemsRef.value.querySelector('.conversation-item--active') as HTMLElement | null
+    if (activeEl) {
+      activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  })
+}
+
+watch(() => chatStore.isViewingArchived, () => scrollToActiveItem())
+watch(() => chatStore.selectedConversationId, () => scrollToActiveItem())
 </script>
 
 <template>
@@ -79,6 +94,7 @@ function showActive() {
 
     <div
       v-else
+      ref="itemsRef"
       class="conversation-list__items"
       role="listbox"
       :aria-label="chatStore.isViewingArchived ? 'Conversas arquivadas' : 'Conversas'"
