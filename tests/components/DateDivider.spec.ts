@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import DateDivider from '@/components/chat/DateDivider.vue'
+import DateDivider from '@/components/chat/message/DateDivider.vue'
 
 describe('DateDivider', () => {
   it('renders the label text', () => {

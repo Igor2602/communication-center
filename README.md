@@ -41,21 +41,26 @@ npm run dev
 
 ```
 src/
+├── assets/
+│   └── icons/              # SVG icons
 ├── components/
-│   ├── chat/           # Chat-specific components
-│   ├── layout/         # Layout containers (AppSidebar, ChatContainer)
-│   └── ui/             # Reusable base components (BaseEmptyState)
-├── composables/        # Reusable composition functions
-├── mocks/              # Fake data with UUID-based entities
-├── router/             # Vue Router config
-├── services/           # Fake API layer (swappable for real endpoints)
-├── stores/             # Pinia store (single useChatStore)
+│   ├── chat/
+│   │   ├── conversation/   # Conversation list, item, skeleton, contact list
+│   │   ├── message/        # Message bubble, list, input, skeleton, attachments
+│   │   └── ChatHeader.vue  # Shared chat header
+│   ├── layout/             # Layout containers (AppSidebar, ChatContainer)
+│   └── ui/                 # Reusable base components (BaseEmptyState, SearchInput)
+├── composables/            # Reusable composition functions
+├── mocks/                  # Fake data with UUID-based entities
+├── router/                 # Vue Router config
+├── services/               # Fake API layer (swappable for real endpoints)
+├── stores/                 # Pinia store (single useChatStore)
 ├── styles/
-│   ├── abstracts/      # Variables, mixins, breakpoints (globally injected)
-│   ├── base/           # Reset, global styles, animations
-│   └── components/     # Shared BEM component partials
-├── types/              # Domain types (User, Message, Conversation, Attachment)
-└── views/              # Thin page shells
+│   ├── abstracts/          # Variables, mixins, breakpoints (globally injected)
+│   ├── base/               # Reset, global styles, animations
+│   └── components/         # Shared BEM component partials
+├── types/                  # Domain types (User, Message, Conversation, Attachment)
+└── views/                  # Thin page shells
 ```
 
 ## Architecture Decisions

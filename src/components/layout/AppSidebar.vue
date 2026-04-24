@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { User } from '@/types/chat'
-import ConversationList from '@/components/chat/ConversationList.vue'
-import ContactList from '@/components/chat/ContactList.vue'
+import ConversationList from '@/components/chat/conversation/ConversationList.vue'
+import ContactList from '@/components/chat/conversation/ContactList.vue'
 import { useChatStore } from '@/stores/useChatStore'
 
 const chatStore = useChatStore()
@@ -76,7 +76,9 @@ async function handleContactSelect(contact: User) {
 
   &__header {
     @include flex-between;
-    padding: $spacing-lg $spacing-lg $spacing-md;
+    height: 80px;
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
   }
 
   &__header-text {
@@ -84,15 +86,21 @@ async function handleContactSelect(contact: User) {
   }
 
   &__title {
-    font-size: $font-size-lg;
-    font-weight: $font-weight-bold;
-    color: $color-text-primary;
-    line-height: $line-height-tight;
+    font-family: $font-family-base;
+    font-size: 18px;
+    font-weight: $font-weight-medium;
+    line-height: 26px;
+    letter-spacing: 0;
+    color: #334155;
   }
 
   &__subtitle {
-    font-size: $font-size-xs;
-    color: $color-text-secondary;
+    font-family: $font-family-base;
+    font-size: 14px;
+    font-weight: $font-weight-regular;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: #64748b;
     margin-top: 2px;
   }
 

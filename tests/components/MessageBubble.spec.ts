@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import MessageBubble from '@/components/chat/MessageBubble.vue'
+import MessageBubble from '@/components/chat/message/MessageBubble.vue'
 import type { Message } from '@/types/chat'
 
 const baseMessage: Message = {
@@ -10,7 +10,6 @@ const baseMessage: Message = {
   content: 'Olá, tudo bem?',
   timestamp: '2026-04-23T14:30:00Z',
   isOutgoing: false,
-  status: 'read',
 }
 
 function createWrapper(message: Message) {

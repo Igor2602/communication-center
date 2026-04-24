@@ -4,8 +4,6 @@ export interface User {
   avatar: string
 }
 
-export type MessageStatus = 'sent' | 'delivered' | 'read'
-
 export interface Attachment {
   name: string
   type: 'image' | 'pdf'
@@ -20,14 +18,15 @@ export interface Message {
   /** ISO 8601 timestamp */
   timestamp: string
   isOutgoing: boolean
-  status: MessageStatus
   attachment?: Attachment
 }
 
 export interface Conversation {
   id: string
   participant: User
+  /** Plain text preview of the last message in the conversation */
   lastMessage: string
+  /** ISO 8601 timestamp of the last message */
   lastMessageAt: string
   unreadCount: number
   isTyping: boolean

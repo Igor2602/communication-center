@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import type { User } from '@/types/chat'
 import Avatar from 'primevue/avatar'
+import SearchInput from '@/components/ui/SearchInput.vue'
 import { useChatStore } from '@/stores/useChatStore'
 import { useDebounce } from '@/composables/useDebounce'
 
@@ -43,16 +44,11 @@ onMounted(() => {
     </div>
 
     <div class="contact-list__search">
-      <div class="contact-list__search-wrapper">
-        <i class="pi pi-search contact-list__search-icon" />
-        <input
-          v-model="searchQuery"
-          type="search"
-          class="contact-list__search-input"
-          placeholder="Buscar contatos..."
-          aria-label="Buscar contatos"
-        >
-      </div>
+      <SearchInput
+        v-model="searchQuery"
+        placeholder="Buscar contatos..."
+        aria-label="Buscar contatos"
+      />
     </div>
 
     <div
@@ -115,41 +111,6 @@ onMounted(() => {
 
   &__search {
     padding: $spacing-md $spacing-lg;
-  }
-
-  &__search-wrapper {
-    position: relative;
-  }
-
-  &__search-icon {
-    position: absolute;
-    left: $spacing-md;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: $font-size-sm;
-    color: $color-text-secondary;
-    pointer-events: none;
-  }
-
-  &__search-input {
-    width: 100%;
-    padding: $spacing-sm $spacing-md $spacing-sm 2.25rem;
-    border: 1px solid $color-border;
-    border-radius: $radius-md;
-    font-size: $font-size-sm;
-    color: $color-text-primary;
-    background-color: $color-bg-secondary;
-    outline: none;
-    @include transition(border-color, box-shadow);
-
-    &::placeholder {
-      color: $color-text-secondary;
-    }
-
-    &:focus {
-      border-color: $color-primary;
-      box-shadow: 0 0 0 2px rgba($color-primary, 0.15);
-    }
   }
 
   &__items {

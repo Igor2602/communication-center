@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ConversationItem from '@/components/chat/ConversationItem.vue'
+import ConversationItem from '@/components/chat/conversation/ConversationItem.vue'
 import type { Conversation } from '@/types/chat'
 
 const mockConversation: Conversation = {
@@ -26,10 +26,6 @@ function createWrapper(props: { conversation: Conversation; isActive: boolean })
           template: '<div class="avatar-stub" :data-alt="alt"></div>',
           props: ['image', 'alt', 'shape', 'size'],
         },
-        Badge: {
-          template: '<span class="badge-stub">{{ value }}</span>',
-          props: ['value', 'severity'],
-        },
       },
     },
   })
@@ -51,7 +47,7 @@ describe('ConversationItem', () => {
   it('renders unread badge when count is greater than zero', () => {
     const wrapper = createWrapper({ conversation: mockConversation, isActive: false })
 
-    const badge = wrapper.find('.badge-stub')
+    const badge = wrapper.find('.conversation-item__badge')
     expect(badge.exists()).toBe(true)
     expect(badge.text()).toBe('3')
   })
@@ -60,7 +56,7 @@ describe('ConversationItem', () => {
     const conversation = { ...mockConversation, unreadCount: 0 }
     const wrapper = createWrapper({ conversation, isActive: false })
 
-    expect(wrapper.find('.badge-stub').exists()).toBe(false)
+    expect(wrapper.find('.conversation-item__badge').exists()).toBe(false)
   })
 
   it('applies active class when isActive is true', () => {

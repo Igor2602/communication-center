@@ -36,7 +36,6 @@ const mockMessages: Message[] = [
     content: 'Hello',
     timestamp: '2026-04-23T14:00:00Z',
     isOutgoing: false,
-    status: 'read',
   },
 ]
 
@@ -112,7 +111,6 @@ describe('useChatStore', () => {
         content: 'Test message',
         timestamp: '2026-04-23T15:00:00Z',
         isOutgoing: true,
-        status: 'sent',
       }
 
       vi.mocked(chatService.sendMessage).mockResolvedValue(sentMessage)
@@ -121,8 +119,7 @@ describe('useChatStore', () => {
         id: 'msg-reply',
         content: 'Reply',
         isOutgoing: false,
-        status: 'read',
-      })
+          })
 
       const store = useChatStore()
       store.conversations = [{ ...mockConversation }]

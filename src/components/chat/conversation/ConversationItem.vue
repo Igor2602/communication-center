@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import type { Conversation } from '@/types/chat'
 import Avatar from 'primevue/avatar'
-import Badge from 'primevue/badge'
 import { useTimeFormat } from '@/composables/useTimeFormat'
 
 const props = defineProps<{
@@ -42,7 +41,6 @@ const previewText = computed(() => {
       :image="props.conversation.participant.avatar"
       :alt="props.conversation.participant.name"
       shape="circle"
-      size="large"
       class="conversation-item__avatar"
     />
 
@@ -66,12 +64,12 @@ const previewText = computed(() => {
         >
           {{ previewText }}
         </span>
-        <Badge
+        <span
           v-if="props.conversation.unreadCount > 0"
-          :value="props.conversation.unreadCount"
-          severity="info"
           class="conversation-item__badge"
-        />
+        >
+          {{ props.conversation.unreadCount }}
+        </span>
       </div>
     </div>
   </button>
@@ -81,25 +79,31 @@ const previewText = computed(() => {
 .conversation-item {
   display: flex;
   align-items: center;
-  gap: $spacing-md;
+  gap: 6px;
   width: 100%;
-  padding: $spacing-md $spacing-lg;
+  padding: 12px 16px;
   text-align: left;
   @include transition(background-color);
 
   &:hover {
-    background-color: $color-bg-tertiary;
+    background-color: #f3f7fb;
   }
 
   &--active {
-    background-color: $color-bg-tertiary;
+    background-color: #f3f7fb;
+  }
+
+  &__avatar {
+    width: 42px !important;
+    height: 42px !important;
+    flex-shrink: 0;
   }
 
   &__content {
     @include flex-column;
     flex: 1;
     min-width: 0;
-    gap: $spacing-xs;
+    gap: 2px;
   }
 
   &__top {
@@ -109,15 +113,22 @@ const previewText = computed(() => {
 
   &__name {
     @include truncate;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-semibold;
-    color: $color-text-primary;
+    font-family: $font-family-base;
+    font-size: 16px;
+    font-weight: $font-weight-medium;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #334155;
   }
 
   &__time {
     flex-shrink: 0;
-    font-size: $font-size-xs;
-    color: $color-text-secondary;
+    font-family: $font-family-base;
+    font-size: 14px;
+    font-weight: $font-weight-regular;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: #334155;
   }
 
   &__bottom {
@@ -127,8 +138,12 @@ const previewText = computed(() => {
 
   &__preview {
     @include truncate;
-    font-size: $font-size-sm;
-    color: $color-text-secondary;
+    font-family: $font-family-base;
+    font-size: 12px;
+    font-weight: $font-weight-regular;
+    line-height: 18px;
+    letter-spacing: 0;
+    color: #64748b;
 
     &--typing {
       font-style: italic;
@@ -137,6 +152,20 @@ const previewText = computed(() => {
 
   &__badge {
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 21px;
+    height: 21px;
+    min-width: 21px;
+    border-radius: 10.5px;
+    background-color: #0768ac;
+    font-family: $font-family-base;
+    font-size: 11px;
+    font-weight: $font-weight-bold;
+    line-height: 100%;
+    letter-spacing: 0;
+    color: #ffffff;
   }
 }
 </style>

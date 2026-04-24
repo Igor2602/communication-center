@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useChatStore } from '@/stores/useChatStore'
 import { useDebounce } from '@/composables/useDebounce'
+import SearchInput from '@/components/ui/SearchInput.vue'
 import ConversationItem from './ConversationItem.vue'
 import ConversationListSkeleton from './ConversationListSkeleton.vue'
 
@@ -37,43 +38,42 @@ function showActive() {
 
 <template>
   <div class="conversation-list">
-    <div class="conversation-list__search">
-      <div class="conversation-list__search-wrapper">
-        <i class="pi pi-search conversation-list__search-icon" />
-        <input
-          v-model="searchQuery"
-          type="search"
-          class="conversation-list__search-input"
-          placeholder="Buscar conversas"
-          aria-label="Buscar conversas"
-        >
-      </div>
-    </div>
+    <div class="conversation-list__channels">
+      <SearchInput
+        v-model="searchQuery"
+        placeholder="Buscar conversas"
+        aria-label="Buscar conversas"
+      />
 
-    <div
-      v-if="chatStore.isViewingArchived"
-      class="conversation-list__archived-header"
-    >
-      <button
-        type="button"
-        class="conversation-list__back"
-        aria-label="Voltar para conversas"
-        @click="showActive"
+      <div
+        v-if="chatStore.isViewingArchived"
+        class="conversation-list__archived-header"
       >
-        <i class="pi pi-arrow-left" />
+        <button
+          type="button"
+          class="conversation-list__back"
+          aria-label="Voltar para conversas"
+          @click="showActive"
+        >
+          <i class="pi pi-arrow-left" />
+          <span>Conversas arquivadas</span>
+        </button>
+      </div>
+
+      <button
+        v-if="!chatStore.isViewingArchived && chatStore.archivedCount > 0"
+        type="button"
+        class="conversation-list__archived-link"
+        @click="showArchived"
+      >
+        <img
+          src="@/assets/icons/icon-archive.svg"
+          alt=""
+          class="conversation-list__archived-icon"
+        >
         <span>Conversas arquivadas</span>
       </button>
     </div>
-
-    <button
-      v-if="!chatStore.isViewingArchived && chatStore.archivedCount > 0"
-      type="button"
-      class="conversation-list__archived-link"
-      @click="showArchived"
-    >
-      <i class="pi pi-inbox" />
-      <span>Conversas arquivadas</span>
-    </button>
 
     <ConversationListSkeleton v-if="chatStore.isLoadingConversations" />
 
@@ -112,49 +112,18 @@ function showActive() {
 .conversation-list {
   @include flex-column;
   height: 100%;
+  overflow: hidden;
 
-  &__search {
-    padding: 0 $spacing-lg $spacing-md;
-  }
-
-  &__search-wrapper {
-    position: relative;
-  }
-
-  &__search-icon {
-    position: absolute;
-    left: $spacing-md;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: $font-size-sm;
-    color: $color-text-secondary;
-    pointer-events: none;
-  }
-
-  &__search-input {
-    width: 100%;
-    padding: $spacing-sm $spacing-md $spacing-sm 2.25rem;
-    border: 1px solid $color-border;
-    border-radius: $radius-md;
-    font-size: $font-size-sm;
-    color: $color-text-primary;
-    background-color: $color-bg-secondary;
-    outline: none;
-    @include transition(border-color, box-shadow);
-
-    &::placeholder {
-      color: $color-text-secondary;
-    }
-
-    &:focus {
-      border-color: $color-primary;
-      box-shadow: 0 0 0 2px rgba($color-primary, 0.15);
-    }
+  &__channels {
+    flex-shrink: 0;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   &__archived-header {
-    padding: $spacing-sm $spacing-lg;
-    border-bottom: 1px solid $color-border;
+    padding: 0;
   }
 
   &__back {
@@ -176,19 +145,19 @@ function showActive() {
     align-items: center;
     gap: $spacing-sm;
     width: 100%;
-    padding: $spacing-sm $spacing-lg;
-    margin-bottom: $spacing-xs;
+    padding: 0;
     font-size: $font-size-sm;
     color: $color-text-secondary;
     @include transition(background-color);
 
     &:hover {
-      background-color: $color-bg-tertiary;
+      color: $color-primary;
     }
+  }
 
-    i {
-      font-size: $font-size-sm;
-    }
+  &__archived-icon {
+    width: 16px;
+    height: 16px;
   }
 
   &__items {

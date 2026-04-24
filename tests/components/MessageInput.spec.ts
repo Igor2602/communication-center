@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import MessageInput from '@/components/chat/MessageInput.vue'
+import MessageInput from '@/components/chat/message/MessageInput.vue'
 import { useChatStore } from '@/stores/useChatStore'
 
 vi.mock('@/services/chatService', () => ({
@@ -16,7 +16,6 @@ vi.mock('@/services/chatService', () => ({
       content: 'test',
       timestamp: new Date().toISOString(),
       isOutgoing: true,
-      status: 'sent',
     }),
     simulateReply: vi.fn().mockResolvedValue({
       id: 'msg-2',
@@ -25,7 +24,6 @@ vi.mock('@/services/chatService', () => ({
       content: 'reply',
       timestamp: new Date().toISOString(),
       isOutgoing: false,
-      status: 'read',
     }),
   },
 }))

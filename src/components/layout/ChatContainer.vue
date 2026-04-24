@@ -27,14 +27,14 @@
   @include flex-column;
   flex: 1;
   height: 100%;
-  background-color: $color-bg-secondary;
+  background-color: #ffffff;
 
   &__header {
     @include flex-between;
-    padding: $spacing-md $spacing-lg;
-    border-bottom: 1px solid $color-border;
-    background-color: $color-bg-primary;
-    min-height: 64px;
+    height: 80px;
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: #ffffff;
   }
 
   &__header-placeholder {
