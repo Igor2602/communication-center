@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Conversation, Message, User } from '@/types/chat'
+import type { Attachment, Conversation, Message, User } from '@/types/chat'
 import { chatService } from '@/services/chatService'
 
 const TYPING_DELAY_MS = 1500
@@ -76,8 +76,9 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  async function sendMessage(content: string) {
-    if (!selectedConversationId.value || !content.trim()) return
+  async function sendMessage(content: string, attachment?: Attachment) {
+    if (!selectedConversationId.value) return
+    if (!content.trim() && !attachment) return
 
     const conversationId = selectedConversationId.value
 
@@ -86,6 +87,7 @@ export const useChatStore = defineStore('chat', () => {
       const message = await chatService.sendMessage({
         conversationId,
         content: content.trim(),
+        attachment,
       })
 
       const messages = messagesByConversation.value[message.conversationId]

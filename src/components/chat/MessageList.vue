@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, watch, ref, nextTick } from 'vue'
-import type { Message, User } from '@/types/chat'
+import type { Attachment, Message, User } from '@/types/chat'
 import MessageBubble from './MessageBubble.vue'
 import DateDivider from './DateDivider.vue'
 import TypingIndicator from './TypingIndicator.vue'
@@ -10,6 +10,10 @@ const props = defineProps<{
   participant: User
   currentUserAvatar: string
   isTyping?: boolean
+}>()
+
+const emit = defineEmits<{
+  previewAttachment: [attachment: Attachment]
 }>()
 
 const listRef = ref<HTMLElement | null>(null)
@@ -106,6 +110,7 @@ watch(
         :message="message"
         :sender-name="getSenderName(message)"
         :sender-avatar="getSenderAvatar(message)"
+        @preview-attachment="emit('previewAttachment', $event)"
       />
     </template>
 

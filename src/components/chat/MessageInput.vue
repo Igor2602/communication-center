@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+import type { Attachment } from '@/types/chat'
 import Button from 'primevue/button'
 import { useMessageComposer } from '@/composables/useMessageComposer'
 import { useChatStore } from '@/stores/useChatStore'
 
 const chatStore = useChatStore()
+
+const pendingAttachment = ref<Attachment | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const fileAccept = ref('')
+const isMenuOpen = ref(false)
+const attachWrapperRef = ref<HTMLElement | null>(null)
 
 const {
   content,
@@ -12,12 +20,96 @@ const {
   isOverLimit,
   canSend,
   handleKeydown,
-  send,
-} = useMessageComposer((text) => chatStore.sendMessage(text))
+} = useMessageComposer(() => handleSend())
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+function closeMenu() {
+  isMenuOpen.value = false
+}
+
+function handleClickOutside(event: MouseEvent) {
+  if (attachWrapperRef.value && !attachWrapperRef.value.contains(event.target as Node)) {
+    closeMenu()
+  }
+}
+
+onMounted(() => document.addEventListener('click', handleClickOutside))
+onUnmounted(() => document.removeEventListener('click', handleClickOutside))
+
+function pickFile() {
+  fileAccept.value = '.pdf,.doc,.docx,.xls,.xlsx,.txt'
+  closeMenu()
+  requestAnimationFrame(() => fileInputRef.value?.click())
+}
+
+function pickImage() {
+  fileAccept.value = 'image/*'
+  closeMenu()
+  requestAnimationFrame(() => fileInputRef.value?.click())
+}
+
+function handleFileChange(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+
+  const isImage = file.type.startsWith('image/')
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    pendingAttachment.value = {
+      name: file.name,
+      type: isImage ? 'image' : 'pdf',
+      base64: reader.result as string,
+    }
+  }
+  reader.readAsDataURL(file)
+  input.value = ''
+}
+
+function removeAttachment() {
+  pendingAttachment.value = null
+}
+
+function handleSend() {
+  const hasContent = content.value.trim().length > 0
+  const hasAttachment = pendingAttachment.value !== null
+
+  if (!hasContent && !hasAttachment) return
+  if (isOverLimit.value) return
+
+  chatStore.sendMessage(content.value, pendingAttachment.value ?? undefined)
+  content.value = ''
+  pendingAttachment.value = null
+}
 </script>
 
 <template>
   <div class="message-input">
+    <div
+      v-if="pendingAttachment"
+      class="message-input__preview"
+    >
+      <div class="message-input__preview-info">
+        <i
+          :class="pendingAttachment.type === 'image' ? 'pi pi-image' : 'pi pi-file-pdf'"
+          class="message-input__preview-icon"
+        />
+        <span class="message-input__preview-name">{{ pendingAttachment.name }}</span>
+      </div>
+      <button
+        type="button"
+        class="message-input__preview-remove"
+        aria-label="Remover anexo"
+        @click="removeAttachment"
+      >
+        <i class="pi pi-times" />
+      </button>
+    </div>
+
     <div class="message-input__field">
       <textarea
         v-model="content"
@@ -28,20 +120,58 @@ const {
         rows="1"
         @keydown="handleKeydown"
       />
-      <button
-        type="button"
-        class="message-input__attach"
-        aria-label="Anexar arquivo"
-      >
-        <i class="pi pi-paperclip" />
-      </button>
+      <input
+        ref="fileInputRef"
+        type="file"
+        :accept="fileAccept"
+        class="message-input__file-input"
+        @change="handleFileChange"
+      />
+      <div ref="attachWrapperRef" class="message-input__attach-wrapper">
+        <button
+          type="button"
+          class="message-input__attach"
+          aria-label="Anexar arquivo"
+          aria-haspopup="true"
+          :aria-expanded="isMenuOpen"
+          @click="toggleMenu"
+        >
+          <i class="pi pi-paperclip" />
+        </button>
+        <Transition name="attach-menu">
+          <div
+            v-if="isMenuOpen"
+            class="message-input__menu"
+            role="menu"
+          >
+            <button
+              type="button"
+              class="message-input__menu-item"
+              role="menuitem"
+              @click="pickFile"
+            >
+              <i class="pi pi-folder message-input__menu-icon message-input__menu-icon--file" />
+              <span>Arquivo</span>
+            </button>
+            <button
+              type="button"
+              class="message-input__menu-item"
+              role="menuitem"
+              @click="pickImage"
+            >
+              <i class="pi pi-image message-input__menu-icon message-input__menu-icon--image" />
+              <span>Imagens</span>
+            </button>
+          </div>
+        </Transition>
+      </div>
       <Button
         icon="pi pi-send"
         label="Enviar"
         aria-label="Enviar mensagem"
         class="message-input__send"
-        :disabled="!canSend"
-        @click="send"
+        :disabled="!canSend && !pendingAttachment"
+        @click="handleSend"
       />
     </div>
 
@@ -59,6 +189,53 @@ const {
 
 <style scoped lang="scss">
 .message-input {
+  &__preview {
+    @include flex-between;
+    padding: $spacing-sm $spacing-md;
+    margin-bottom: $spacing-sm;
+    background-color: $color-bg-tertiary;
+    border-radius: $radius-md;
+    border: 1px solid $color-border;
+  }
+
+  &__preview-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    min-width: 0;
+  }
+
+  &__preview-icon {
+    font-size: $font-size-base;
+    color: $color-primary;
+    flex-shrink: 0;
+  }
+
+  &__preview-name {
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    @include truncate;
+  }
+
+  &__preview-remove {
+    @include flex-center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: $color-text-secondary;
+    border-radius: $radius-full;
+    @include transition(background-color, color);
+
+    &:hover {
+      background-color: rgba($color-error, 0.1);
+      color: $color-error;
+    }
+
+    i {
+      font-size: $font-size-xs;
+    }
+  }
+
   &__field {
     display: flex;
     align-items: flex-end;
@@ -101,6 +278,14 @@ const {
     }
   }
 
+  &__file-input {
+    display: none;
+  }
+
+  &__attach-wrapper {
+    position: relative;
+  }
+
   &__attach {
     @include flex-center;
     width: 40px;
@@ -115,6 +300,47 @@ const {
 
     i {
       font-size: $font-size-lg;
+    }
+  }
+
+  &__menu {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: $spacing-sm;
+    min-width: 200px;
+    background-color: $color-bg-primary;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-lg;
+    padding: $spacing-xs 0;
+    z-index: $z-dropdown;
+  }
+
+  &__menu-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    width: 100%;
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    @include transition(background-color);
+
+    &:hover {
+      background-color: $color-bg-tertiary;
+    }
+  }
+
+  &__menu-icon {
+    font-size: $font-size-base;
+
+    &--file {
+      color: $color-primary;
+    }
+
+    &--image {
+      color: $color-success;
     }
   }
 
@@ -141,5 +367,16 @@ const {
     margin: 0 $spacing-xs;
     color: $color-border;
   }
+}
+
+.attach-menu-enter-active,
+.attach-menu-leave-active {
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.attach-menu-enter-from,
+.attach-menu-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
 }
 </style>

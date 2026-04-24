@@ -4,6 +4,12 @@ export interface User {
   avatar: string
 }
 
+export interface Attachment {
+  name: string
+  type: 'image' | 'pdf'
+  base64: string
+}
+
 export interface Message {
   id: string
   conversationId: string
@@ -11,6 +17,7 @@ export interface Message {
   content: string
   timestamp: string
   isOutgoing: boolean
+  attachment?: Attachment
 }
 
 export interface Conversation {
@@ -26,4 +33,5 @@ export interface Conversation {
 export interface SendMessagePayload {
   conversationId: string
   content: string
+  attachment?: Attachment
 }

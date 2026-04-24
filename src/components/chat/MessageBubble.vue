@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import type { Message } from '@/types/chat'
+import type { Message, Attachment } from '@/types/chat'
 import Avatar from 'primevue/avatar'
 
 const props = defineProps<{
   message: Message
   senderName: string
   senderAvatar: string
+}>()
+
+const emit = defineEmits<{
+  previewAttachment: [attachment: Attachment]
 }>()
 
 function formatTime(isoString: string): string {
@@ -32,7 +36,31 @@ function formatTime(isoString: string): string {
     <div class="message-bubble__wrapper">
       <span class="message-bubble__sender">{{ props.senderName }}</span>
       <div class="message-bubble__body">
-        <p class="message-bubble__content">{{ props.message.content }}</p>
+        <button
+          v-if="props.message.attachment"
+          type="button"
+          class="message-bubble__attachment"
+          @click="emit('previewAttachment', props.message.attachment!)"
+        >
+          <img
+            v-if="props.message.attachment.type === 'image'"
+            :src="props.message.attachment.base64"
+            :alt="props.message.attachment.name"
+            class="message-bubble__attachment-image"
+          />
+          <div
+            v-else-if="props.message.attachment.type === 'pdf'"
+            class="message-bubble__attachment-pdf"
+          >
+            <i class="pi pi-file-pdf" />
+            <span class="message-bubble__attachment-name">
+              {{ props.message.attachment.name }}
+            </span>
+          </div>
+        </button>
+        <p v-if="props.message.content" class="message-bubble__content">
+          {{ props.message.content }}
+        </p>
       </div>
       <time
         class="message-bubble__time"
@@ -79,6 +107,11 @@ $color-bubble-outgoing: #1e293b;
     .message-bubble__time {
       text-align: right;
     }
+
+    .message-bubble__attachment-pdf {
+      color: $color-text-inverse;
+      border-color: rgba($color-text-inverse, 0.2);
+    }
   }
 
   &__avatar {
@@ -108,6 +141,55 @@ $color-bubble-outgoing: #1e293b;
     font-size: $font-size-sm;
     line-height: $line-height-base;
     word-break: break-word;
+  }
+
+  &__attachment {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: $spacing-xs;
+    cursor: pointer;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__attachment-image {
+    max-width: 240px;
+    max-height: 180px;
+    border-radius: $radius-md;
+    object-fit: cover;
+    @include transition(opacity);
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  &__attachment-pdf {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    @include transition(background-color);
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    i {
+      font-size: $font-size-2xl;
+      color: $color-error;
+      flex-shrink: 0;
+    }
+  }
+
+  &__attachment-name {
+    font-size: $font-size-sm;
+    @include truncate;
   }
 
   &__time {
