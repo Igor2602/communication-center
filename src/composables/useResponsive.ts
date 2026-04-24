@@ -3,6 +3,10 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const BREAKPOINT_MOBILE = 768
 const BREAKPOINT_TABLET = 1024
 
+/**
+ * Reactive breakpoint detection via window resize listener.
+ * Listener is cleaned up on component unmount.
+ */
 export function useResponsive() {
   const isMobile = ref(false)
   const isTablet = ref(false)

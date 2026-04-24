@@ -58,6 +58,8 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function selectConversation(conversationId: string) {
+    if (!conversationId) return
+
     selectedConversationId.value = conversationId
 
     const conversation = [...conversations.value, ...archivedConversations.value]
@@ -116,14 +118,19 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   function simulateReply(conversationId: string) {
-    const conversation = conversations.value.find((c) => c.id === conversationId)
-    if (!conversation) return
-
     setTimeout(() => {
+      // Guard: conversation may have been archived or removed
+      const conversation = conversations.value.find((c) => c.id === conversationId)
+      if (!conversation) return
+
       conversation.isTyping = true
 
       setTimeout(async () => {
-        conversation.isTyping = false
+        // Re-check: conversation may have changed during typing delay
+        const current = conversations.value.find((c) => c.id === conversationId)
+        if (!current) return
+
+        current.isTyping = false
 
         const reply = await chatService.simulateReply(conversationId)
 
@@ -132,8 +139,8 @@ export const useChatStore = defineStore('chat', () => {
           messages.push(reply)
         }
 
-        conversation.lastMessage = reply.content
-        conversation.lastMessageAt = reply.timestamp
+        current.lastMessage = reply.content
+        current.lastMessageAt = reply.timestamp
       }, REPLY_DELAY_MS)
     }, TYPING_DELAY_MS)
   }
@@ -166,6 +173,8 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function archiveConversation(conversationId: string) {
+    if (!conversationId) return
+
     await chatService.archiveConversation(conversationId)
 
     const conversation = conversations.value.find((c) => c.id === conversationId)
@@ -181,6 +190,8 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function unarchiveConversation(conversationId: string) {
+    if (!conversationId) return
+
     await chatService.unarchiveConversation(conversationId)
 
     const conversation = archivedConversations.value.find((c) => c.id === conversationId)

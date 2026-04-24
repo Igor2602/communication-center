@@ -17,6 +17,7 @@ export interface Message {
   conversationId: string
   senderId: string
   content: string
+  /** ISO 8601 timestamp */
   timestamp: string
   isOutgoing: boolean
   status: MessageStatus

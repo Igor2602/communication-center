@@ -58,17 +58,6 @@ export const chatService = {
       attachment: payload.attachment,
     }
 
-    const conversationMessages = mockMessages[payload.conversationId]
-    if (conversationMessages) {
-      conversationMessages.push(message)
-    }
-
-    const conversation = mockConversations.find((c) => c.id === payload.conversationId)
-    if (conversation) {
-      conversation.lastMessage = payload.content
-      conversation.lastMessageAt = message.timestamp
-    }
-
     return delay(message)
   },
 
@@ -85,16 +74,6 @@ export const chatService = {
       timestamp: new Date().toISOString(),
       isOutgoing: false,
       status: 'read',
-    }
-
-    const conversationMessages = mockMessages[conversationId]
-    if (conversationMessages) {
-      conversationMessages.push(reply)
-    }
-
-    if (conversation) {
-      conversation.lastMessage = content
-      conversation.lastMessageAt = reply.timestamp
     }
 
     return delay(reply)
@@ -115,25 +94,14 @@ export const chatService = {
       isArchived: false,
     }
 
-    mockConversations.push(conversation)
-    mockMessages[conversation.id] = []
-
     return delay(conversation)
   },
 
-  archiveConversation(conversationId: string): Promise<void> {
-    const conversation = mockConversations.find((c) => c.id === conversationId)
-    if (conversation) {
-      conversation.isArchived = true
-    }
+  archiveConversation(_conversationId: string): Promise<void> {
     return delay(undefined)
   },
 
-  unarchiveConversation(conversationId: string): Promise<void> {
-    const conversation = mockConversations.find((c) => c.id === conversationId)
-    if (conversation) {
-      conversation.isArchived = false
-    }
+  unarchiveConversation(_conversationId: string): Promise<void> {
     return delay(undefined)
   },
 }

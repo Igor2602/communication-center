@@ -1,6 +1,6 @@
 # Communication Center
 
-A portfolio-grade chat interface built as a frontend technical test. The project demonstrates clean architecture, polished UI, responsive design, and realistic async state management using Vue 3 and TypeScript.
+A chat interface built as a frontend technical test. The project demonstrates clean architecture, responsive design, and realistic async state management using Vue 3 and TypeScript.
 
 **Visual reference:** [Figma Design](https://www.figma.com/design/tNP3PqdaRymLStNe82qzS3/Desafio-t%C3%A9cnico---Frontend?node-id=1-6976)
 
@@ -33,7 +33,9 @@ npm run dev
 | `npm run preview` | Preview production build |
 | `npm run lint` | Run ESLint |
 | `npm run lint:fix` | Run ESLint with auto-fix |
-| `npx vitest run` | Run unit tests |
+| `npm run test` | Run unit tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run type-check` | Run TypeScript type checking |
 
 ## Project Structure
 
@@ -95,7 +97,7 @@ The `chatService` simulates an async backend with 400ms delay on all operations:
 - `simulateReply(conversationId)` — returns a random response from a pool
 - `archiveConversation()` / `unarchiveConversation()` / `createConversation()`
 
-The service holds mock data in memory. Replacing it with real API calls requires no changes to the store or components.
+The service returns data without mutating shared state — the store is the single source of truth for UI state. Replacing the service with real API calls requires no changes to the store or components.
 
 ## Accessibility
 
@@ -113,7 +115,7 @@ The service holds mock data in memory. Replacing it with real API calls requires
 - **Composable tests** — `useCharacterLimit` (boundary conditions), `useDebounce` (timing)
 - **Component tests** — `ConversationItem`, `MessageBubble`, `MessageInput`, `DateDivider`
 
-Run with `npx vitest run` or `npx vitest` for watch mode.
+Run with `npm run test` or `npm run test:watch` for watch mode.
 
 ## Responsive Behavior
 
