@@ -1,12 +1,12 @@
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
+import { useCharacterLimit } from './useCharacterLimit'
 
 const MAX_LENGTH = 2000
 
 export function useMessageComposer(onSend: (content: string) => void) {
-  const content = ref('')
+  const { text: content, remaining, isOverLimit, percentage, maxLength } = useCharacterLimit(MAX_LENGTH)
 
   const characterCount = computed(() => content.value.length)
-  const isOverLimit = computed(() => characterCount.value > MAX_LENGTH)
   const canSend = computed(() => content.value.trim().length > 0 && !isOverLimit.value)
 
   function handleKeydown(event: KeyboardEvent) {
@@ -25,8 +25,10 @@ export function useMessageComposer(onSend: (content: string) => void) {
   return {
     content,
     characterCount,
-    maxLength: MAX_LENGTH,
+    remaining,
     isOverLimit,
+    percentage,
+    maxLength,
     canSend,
     handleKeydown,
     send,
