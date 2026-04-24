@@ -120,7 +120,12 @@ watch(() => props.isTyping, () => scrollToBottom(), { flush: 'post' })
     background-color: $color-warning-bg;
     box-shadow: $message-shadow;
     border-radius: $radius-md;
-    white-space: nowrap;
+    text-align: center;
+
+    @include media-down($breakpoint-md) {
+      white-space: normal;
+      line-height: $line-height-base;
+    }
   }
 
   // Reset children to full width
