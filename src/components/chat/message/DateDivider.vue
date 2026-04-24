@@ -1,7 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  label: string
-}>()
+import type { DateDividerProps } from './types'
+
+defineProps<DateDividerProps>()
 </script>
 
 <template>

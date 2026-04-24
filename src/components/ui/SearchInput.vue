@@ -1,8 +1,7 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
-  placeholder?: string
-  ariaLabel?: string
-}>(), {
+import type { SearchInputProps } from './types'
+
+withDefaults(defineProps<SearchInputProps>(), {
   placeholder: 'Buscar',
   ariaLabel: 'Buscar',
 })

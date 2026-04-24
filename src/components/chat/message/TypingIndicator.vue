@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import type { TypingIndicatorProps } from './types'
 import Avatar from 'primevue/avatar'
 
-defineProps<{
-  name: string
-  avatar: string
-}>()
+defineProps<TypingIndicatorProps>()
 </script>
 
 <template>

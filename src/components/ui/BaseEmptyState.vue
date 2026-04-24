@@ -1,9 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  icon?: string
-  title: string
-  description?: string
-}>()
+import type { BaseEmptyStateProps } from './types'
+
+defineProps<BaseEmptyStateProps>()
 </script>
 
 <template>

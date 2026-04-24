@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Conversation } from '@/types/chat'
+import type { ConversationItemProps, ConversationItemEmits } from './types'
 import Avatar from 'primevue/avatar'
 import { useTimeFormat } from '@/composables/useTimeFormat'
 
-const props = defineProps<{
-  conversation: Conversation
-  isActive: boolean
-}>()
+const props = defineProps<ConversationItemProps>()
 
-defineEmits<{
-  select: [conversationId: string]
-}>()
+defineEmits<ConversationItemEmits>()
 
 const { formatConversationTime } = useTimeFormat()
 

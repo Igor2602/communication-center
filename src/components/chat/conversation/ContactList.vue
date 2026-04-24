@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import type { User } from '@/types/chat'
+import type { ContactListEmits } from './types'
 import Avatar from 'primevue/avatar'
 import SearchInput from '@/components/ui/SearchInput.vue'
 import { useChatStore } from '@/stores/useChatStore'
 import { useDebounce } from '@/composables/useDebounce'
 
-const emit = defineEmits<{
-  select: [contact: User]
-  back: []
-}>()
+const emit = defineEmits<ContactListEmits>()
 
 const chatStore = useChatStore()
 const searchQuery = ref('')

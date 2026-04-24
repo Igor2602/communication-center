@@ -1,20 +1,13 @@
 <script setup lang="ts">
-import type { Conversation } from '@/types/chat'
+import type { ChatHeaderProps, ChatHeaderEmits } from './types'
 import Avatar from 'primevue/avatar'
 import Button from 'primevue/button'
 
-const props = withDefaults(defineProps<{
-  conversation: Conversation
-  showBack?: boolean
-}>(), {
+const props = withDefaults(defineProps<ChatHeaderProps>(), {
   showBack: false,
 })
 
-const emit = defineEmits<{
-  archive: [conversationId: string]
-  unarchive: [conversationId: string]
-  back: []
-}>()
+const emit = defineEmits<ChatHeaderEmits>()
 
 function handleToggleArchive() {
   if (props.conversation.isArchived) {

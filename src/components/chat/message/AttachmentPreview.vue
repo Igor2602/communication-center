@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { Attachment } from '@/types/chat'
+import type { AttachmentPreviewProps } from './types'
 import Dialog from 'primevue/dialog'
 
-defineProps<{
-  attachment: Attachment | null
-}>()
+defineProps<AttachmentPreviewProps>()
 
 const visible = defineModel<boolean>('visible', { required: true })
 

@@ -1,22 +1,16 @@
 <script setup lang="ts">
 import { computed, watch, ref } from 'vue'
-import type { Attachment, Message, User } from '@/types/chat'
+import type { Message } from '@/types/chat'
+import type { MessageListProps, MessageListEmits } from './types'
 import MessageBubble from './MessageBubble.vue'
 import DateDivider from './DateDivider.vue'
 import TypingIndicator from './TypingIndicator.vue'
 import { useTimeFormat } from '@/composables/useTimeFormat'
 import { useAutoScroll } from '@/composables/useAutoScroll'
 
-const props = defineProps<{
-  messages: Message[]
-  participant: User
-  currentUserAvatar: string
-  isTyping?: boolean
-}>()
+const props = defineProps<MessageListProps>()
 
-const emit = defineEmits<{
-  previewAttachment: [attachment: Attachment]
-}>()
+const emit = defineEmits<MessageListEmits>()
 
 const listRef = ref<HTMLElement | null>(null)
 const { formatDateDivider } = useTimeFormat()

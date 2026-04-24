@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import type { Message, Attachment } from '@/types/chat'
+import type { MessageBubbleProps, MessageBubbleEmits } from './types'
 import Avatar from 'primevue/avatar'
 
-const props = defineProps<{
-  message: Message
-  senderName: string
-  senderAvatar: string
-}>()
+const props = defineProps<MessageBubbleProps>()
 
-const emit = defineEmits<{
-  previewAttachment: [attachment: Attachment]
-}>()
+const emit = defineEmits<MessageBubbleEmits>()
 
 function formatTime(isoString: string): string {
   return new Date(isoString).toLocaleTimeString('pt-BR', {
