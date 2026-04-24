@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useChatStore } from '@/stores/useChatStore'
+import { useDebounce } from '@/composables/useDebounce'
 import ConversationItem from './ConversationItem.vue'
 import ConversationListSkeleton from './ConversationListSkeleton.vue'
 
 const chatStore = useChatStore()
 
 const searchQuery = ref('')
+const debouncedQuery = useDebounce(searchQuery, 300)
 
 const filteredConversations = computed(() => {
-  const query = searchQuery.value.toLowerCase().trim()
+  const query = debouncedQuery.value.toLowerCase().trim()
   if (!query) return chatStore.displayedConversations
 
   return chatStore.displayedConversations.filter((conversation) =>
-    conversation.participant.name.toLowerCase().includes(query),
+    conversation.participant.name.toLowerCase().includes(query) ||
+    conversation.lastMessage.toLowerCase().includes(query),
   )
 })
 

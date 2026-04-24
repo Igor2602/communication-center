@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import type { User } from '@/types/chat'
 import Avatar from 'primevue/avatar'
 import { useChatStore } from '@/stores/useChatStore'
+import { useDebounce } from '@/composables/useDebounce'
 
 const emit = defineEmits<{
   select: [contact: User]
@@ -11,9 +12,10 @@ const emit = defineEmits<{
 
 const chatStore = useChatStore()
 const searchQuery = ref('')
+const debouncedQuery = useDebounce(searchQuery, 300)
 
 const filteredContacts = computed(() => {
-  const query = searchQuery.value.toLowerCase().trim()
+  const query = debouncedQuery.value.toLowerCase().trim()
   if (!query) return chatStore.contacts
 
   return chatStore.contacts.filter((contact) =>
