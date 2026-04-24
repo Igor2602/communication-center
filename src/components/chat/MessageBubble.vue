@@ -40,6 +40,7 @@ function formatTime(isoString: string): string {
           v-if="props.message.attachment"
           type="button"
           class="message-bubble__attachment"
+          :aria-label="`Visualizar ${props.message.attachment.name}`"
           @click="emit('previewAttachment', props.message.attachment!)"
         >
           <img

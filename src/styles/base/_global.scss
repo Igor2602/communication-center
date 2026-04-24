@@ -1,3 +1,4 @@
+@use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
 // ==============================================
@@ -7,4 +8,17 @@
 #app {
   min-height: 100vh;
   @include flex-column;
+}
+
+// Global focus-visible style for all interactive elements
+:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+  border-radius: $radius-sm;
 }

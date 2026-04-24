@@ -36,8 +36,20 @@ function handleClickOutside(event: MouseEvent) {
   }
 }
 
-onMounted(() => document.addEventListener('click', handleClickOutside))
-onUnmounted(() => document.removeEventListener('click', handleClickOutside))
+function handleEscape(event: KeyboardEvent) {
+  if (event.key === 'Escape' && isMenuOpen.value) {
+    closeMenu()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+  document.addEventListener('keydown', handleEscape)
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('keydown', handleEscape)
+})
 
 function pickFile() {
   fileAccept.value = '.pdf,.doc,.docx,.xls,.xlsx,.txt'
@@ -125,6 +137,8 @@ function handleSend() {
         type="file"
         :accept="fileAccept"
         class="message-input__file-input"
+        aria-label="Selecionar arquivo"
+        tabindex="-1"
         @change="handleFileChange"
       />
       <div ref="attachWrapperRef" class="message-input__attach-wrapper">
