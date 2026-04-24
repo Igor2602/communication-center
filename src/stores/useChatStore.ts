@@ -66,7 +66,10 @@ export const useChatStore = defineStore('chat', () => {
       conversation.unreadCount = 0
     }
 
-    await fetchMessages(conversationId)
+    const cached = messagesByConversation.value[conversationId]
+    if (!cached) {
+      await fetchMessages(conversationId)
+    }
   }
 
   async function fetchMessages(conversationId: string) {

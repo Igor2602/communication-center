@@ -79,6 +79,17 @@ describe('useChatStore', () => {
       expect(chatService.getMessages).toHaveBeenCalledWith('conv-1')
     })
 
+    it('skips fetch when messages are already cached', async () => {
+      const store = useChatStore()
+      store.conversations = [{ ...mockConversation }]
+      store.messagesByConversation = { 'conv-1': mockMessages }
+
+      await store.selectConversation('conv-1')
+
+      expect(chatService.getMessages).not.toHaveBeenCalled()
+      expect(store.selectedMessages).toHaveLength(1)
+    })
+
     it('resets unread count when selecting a conversation', async () => {
       vi.mocked(chatService.getMessages).mockResolvedValue([])
 
