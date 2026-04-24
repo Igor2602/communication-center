@@ -52,12 +52,17 @@ async function handleContactSelect(contact: User) {
       </button>
     </header>
 
-    <ContactList
-      v-if="isSelectingContact"
-      @select="handleContactSelect"
-      @back="closeContactList"
-    />
-    <ConversationList v-else />
+    <nav
+      class="sidebar__nav"
+      aria-label="Navegação de conversas"
+    >
+      <ContactList
+        v-if="isSelectingContact"
+        @select="handleContactSelect"
+        @back="closeContactList"
+      />
+      <ConversationList v-else />
+    </nav>
   </aside>
 </template>
 
@@ -76,6 +81,12 @@ async function handleContactSelect(contact: User) {
   @include media-down($breakpoint-md) {
     width: 100%;
     border-right: none;
+  }
+
+  &__nav {
+    @include flex-column;
+    flex: 1;
+    overflow: hidden;
   }
 
   &__header {

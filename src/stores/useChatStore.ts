@@ -52,9 +52,13 @@ export const useChatStore = defineStore('chat', () => {
     contacts.value = await chatService.getContacts()
   }
 
+  function clearSelection() {
+    selectedConversationId.value = null
+  }
+
   function setViewingArchived(value: boolean) {
     isViewingArchived.value = value
-    selectedConversationId.value = null
+    clearSelection()
   }
 
   async function selectConversation(conversationId: string) {
@@ -117,17 +121,21 @@ export const useChatStore = defineStore('chat', () => {
     simulateReply(conversationId)
   }
 
+  function findActiveConversation(conversationId: string): Conversation | undefined {
+    return conversations.value.find(
+      (c) => c.id === conversationId && !c.isArchived,
+    )
+  }
+
   function simulateReply(conversationId: string) {
     setTimeout(() => {
-      // Guard: conversation may have been archived or removed
-      const conversation = conversations.value.find((c) => c.id === conversationId)
+      const conversation = findActiveConversation(conversationId)
       if (!conversation) return
 
       conversation.isTyping = true
 
       setTimeout(async () => {
-        // Re-check: conversation may have changed during typing delay
-        const current = conversations.value.find((c) => c.id === conversationId)
+        const current = findActiveConversation(conversationId)
         if (!current) return
 
         current.isTyping = false
@@ -224,6 +232,7 @@ export const useChatStore = defineStore('chat', () => {
     // Actions
     fetchConversations,
     fetchContacts,
+    clearSelection,
     setViewingArchived,
     selectConversation,
     fetchMessages,

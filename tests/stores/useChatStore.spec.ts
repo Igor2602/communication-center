@@ -183,4 +183,67 @@ describe('useChatStore', () => {
       expect(store.selectedConversationId).toBe('conv-1')
     })
   })
+
+  describe('clearSelection', () => {
+    it('clears selected conversation', () => {
+      const store = useChatStore()
+      store.selectedConversationId = 'conv-1'
+
+      store.clearSelection()
+
+      expect(store.selectedConversationId).toBeNull()
+      expect(store.selectedConversation).toBeNull()
+    })
+  })
+
+  describe('sendMessage guards', () => {
+    it('does not send when no conversation is selected', async () => {
+      const store = useChatStore()
+      store.selectedConversationId = null
+
+      await store.sendMessage('Hello')
+
+      expect(chatService.sendMessage).not.toHaveBeenCalled()
+    })
+
+    it('does not send when content is empty and no attachment', async () => {
+      const store = useChatStore()
+      store.selectedConversationId = 'conv-1'
+
+      await store.sendMessage('  ')
+
+      expect(chatService.sendMessage).not.toHaveBeenCalled()
+    })
+
+    it('sends when content is empty but attachment exists', async () => {
+      const attachment = { name: 'file.pdf', type: 'pdf' as const, base64: 'data:...' }
+      vi.mocked(chatService.sendMessage).mockResolvedValue({
+        id: 'msg-att',
+        conversationId: 'conv-1',
+        senderId: 'me',
+        content: '',
+        timestamp: new Date().toISOString(),
+        isOutgoing: true,
+        attachment,
+      })
+      vi.mocked(chatService.simulateReply).mockResolvedValue({
+        id: 'msg-reply',
+        conversationId: 'conv-1',
+        senderId: 'user-1',
+        content: 'Reply',
+        timestamp: new Date().toISOString(),
+        isOutgoing: false,
+      })
+
+      const store = useChatStore()
+      store.conversations = [{ ...mockConversation }]
+      store.selectedConversationId = 'conv-1'
+      store.messagesByConversation = { 'conv-1': [] }
+
+      await store.sendMessage('', attachment)
+
+      expect(chatService.sendMessage).toHaveBeenCalled()
+      expect(store.messagesByConversation['conv-1']).toHaveLength(1)
+    })
+  })
 })

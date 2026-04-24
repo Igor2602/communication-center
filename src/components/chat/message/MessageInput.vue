@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { Attachment } from '@/types/chat'
 import { useMessageComposer } from '@/composables/useMessageComposer'
 import { useChatStore } from '@/stores/useChatStore'
@@ -7,6 +7,7 @@ import { useChatStore } from '@/stores/useChatStore'
 const chatStore = useChatStore()
 
 const pendingAttachment = ref<Attachment | null>(null)
+const hasAttachment = computed(() => pendingAttachment.value !== null)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const fileAccept = ref('')
 const isMenuOpen = ref(false)
@@ -19,7 +20,7 @@ const {
   isOverLimit,
   canSend,
   handleKeydown,
-} = useMessageComposer(() => handleSend())
+} = useMessageComposer(() => handleSend(), hasAttachment)
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -86,11 +87,7 @@ function removeAttachment() {
 }
 
 function handleSend() {
-  const hasContent = content.value.trim().length > 0
-  const hasAttachment = pendingAttachment.value !== null
-
-  if (!hasContent && !hasAttachment) return
-  if (isOverLimit.value) return
+  if (!canSend.value) return
 
   chatStore.sendMessage(content.value, pendingAttachment.value ?? undefined)
   content.value = ''
@@ -185,7 +182,7 @@ function handleSend() {
         type="button"
         class="message-input__send"
         aria-label="Enviar mensagem"
-        :disabled="!canSend && !pendingAttachment"
+        :disabled="!canSend"
         @click="handleSend"
       >
         <span>Enviar</span>

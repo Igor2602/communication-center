@@ -36,7 +36,7 @@ watch(
 
 function handleBack() {
   showChat.value = false
-  chatStore.selectedConversationId = null
+  chatStore.clearSelection()
 }
 
 function handleArchive(conversationId: string) {
