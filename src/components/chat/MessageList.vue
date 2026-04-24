@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, watch, ref, nextTick } from 'vue'
+import { computed, watch, ref } from 'vue'
 import type { Attachment, Message, User } from '@/types/chat'
 import MessageBubble from './MessageBubble.vue'
 import DateDivider from './DateDivider.vue'
 import TypingIndicator from './TypingIndicator.vue'
 import { useTimeFormat } from '@/composables/useTimeFormat'
+import { useAutoScroll } from '@/composables/useAutoScroll'
 
 const props = defineProps<{
   messages: Message[]
@@ -19,6 +20,7 @@ const emit = defineEmits<{
 
 const listRef = ref<HTMLElement | null>(null)
 const { formatDateDivider } = useTimeFormat()
+const { scrollToBottom } = useAutoScroll(listRef)
 
 interface DateGroup {
   date: string
@@ -54,16 +56,12 @@ function getSenderAvatar(message: Message): string {
   return message.isOutgoing ? props.currentUserAvatar : props.participant.avatar
 }
 
-function scrollToBottom() {
-  nextTick(() => {
-    if (listRef.value) {
-      listRef.value.scrollTop = listRef.value.scrollHeight
-    }
-  })
-}
+// Force scroll on conversation change
+watch(() => props.messages, () => scrollToBottom(true), { flush: 'post' })
 
+// Respect user position on new messages / typing
 watch(
-  () => [props.messages, props.messages.length, props.isTyping],
+  () => [props.messages.length, props.isTyping],
   () => scrollToBottom(),
   { flush: 'post' },
 )
