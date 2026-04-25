@@ -154,17 +154,6 @@ This project was built incrementally following **GitFlow conventions** with smal
 
 Each step produced a **lean semantic commit** (e.g., `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`) targeting a single concern.
 
-## Future Improvements
-
-- End-to-end tests with Cypress or Playwright
-- Message search within conversations
-- Read receipts with real-time updates
-- Group conversations
-- Push notifications
-- Dark mode theme
-- Internationalization (i18n)
-- Real WebSocket integration for live messaging
-
 ## Conventions
 
 See [CONVENTIONS.md](./CONVENTIONS.md) for detailed architecture, naming, styling, and Git conventions.
