@@ -154,6 +154,3 @@ This project was built incrementally following **GitFlow conventions** with smal
 
 Each step produced a **lean semantic commit** (e.g., `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`) targeting a single concern.
 
-## Conventions
-
-See [CONVENTIONS.md](./CONVENTIONS.md) for detailed architecture, naming, styling, and Git conventions.
